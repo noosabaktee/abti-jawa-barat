@@ -1,19 +1,19 @@
 <?php
 
-
 namespace App\Http\Controllers;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 use Illuminate\Http\Request;
 
-class GalleryController extends Controller
+class ViewBigNewsController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('gallery', ['page' => 'gallery']);
+            return view('view-bignews', [
+            'page' => 'viewBignews'
+        ]);
     }
 
     /**
