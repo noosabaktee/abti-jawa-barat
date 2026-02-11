@@ -1,0 +1,846 @@
+/* =========================================================
+   CMS Home Editor — Clean White + Red Accent
+   File: assets/css/edit-home.css
+   ========================================================= */
+
+/* ---------- Design Tokens ---------- */
+:root {
+    --bg: #ffffff;
+    --bg-soft: #f7f7f9;
+    --surface: #ffffff;
+    --surface-2: #fbfbfd;
+
+    --text: #111827;
+    --muted: #6b7280;
+    --muted-2: #9ca3af;
+
+    --border: #e5e7eb;
+    --border-2: #eef0f4;
+
+    --red: #d61f2c;
+    --red-2: #ff3b4a;
+
+    --shadow: 0 10px 24px rgba(17, 24, 39, 0.06);
+    --shadow-sm: 0 6px 16px rgba(17, 24, 39, 0.06);
+
+    --radius: 16px;
+    --radius-sm: 12px;
+
+    --ring: 0 0 0 4px rgba(214, 31, 44, 0.12);
+
+    --side-w: 300px;
+    --gap: 18px;
+    --gap-lg: 22px;
+
+    --max: 1200px;
+
+    --font:
+        ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica,
+        Arial, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+/* ---------- Base Reset ---------- */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font);
+    color: var(--text);
+    background: linear-gradient(180deg, var(--bg) 0%, var(--bg-soft) 100%);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+a {
+    color: inherit;
+    text-decoration: none;
+}
+button,
+input,
+textarea,
+select {
+    font: inherit;
+    color: inherit;
+}
+button {
+    cursor: pointer;
+}
+:focus {
+    outline: none;
+}
+
+::selection {
+    background: rgba(214, 31, 44, 0.14);
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* ---------- Layout ---------- */
+.app {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: var(--side-w) 1fr;
+    gap: 0;
+}
+
+.side {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 18px 14px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.main {
+    min-width: 0;
+    padding: 22px 22px 40px;
+}
+
+.content {
+    max-width: var(--max);
+    margin: 0 auto;
+}
+
+/* ---------- Sidebar ---------- */
+.brand {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding: 12px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: linear-gradient(
+        180deg,
+        var(--surface) 0%,
+        var(--surface-2) 100%
+    );
+    box-shadow: var(--shadow-sm);
+}
+
+.logoDot {
+    width: 14px;
+    height: 14px;
+    border-radius: 999px;
+    background: var(--red);
+    box-shadow: 0 0 0 6px rgba(214, 31, 44, 0.1);
+    flex: 0 0 auto;
+}
+
+.brandTitle {
+    font-weight: 800;
+    letter-spacing: 0.2px;
+    line-height: 1.1;
+}
+
+.brandSub {
+    margin-top: 2px;
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.nav {
+    margin-top: 14px;
+    padding: 6px 4px;
+    overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(17, 24, 39, 0.18) transparent;
+}
+
+.nav::-webkit-scrollbar {
+    width: 10px;
+}
+.nav::-webkit-scrollbar-thumb {
+    background: rgba(17, 24, 39, 0.14);
+    border-radius: 999px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+}
+
+.navBtn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 12px 12px;
+    margin: 0 0 8px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--surface);
+    transition:
+        transform 0.12s ease,
+        box-shadow 0.12s ease,
+        border-color 0.12s ease,
+        background 0.12s ease;
+}
+
+.navBtn:hover {
+    border-color: rgba(214, 31, 44, 0.28);
+    box-shadow: 0 8px 18px rgba(17, 24, 39, 0.06);
+    transform: translateY(-1px);
+}
+
+.navBtn.active {
+    border-color: rgba(214, 31, 44, 0.42);
+    background: linear-gradient(
+        180deg,
+        rgba(214, 31, 44, 0.06) 0%,
+        rgba(214, 31, 44, 0.02) 100%
+    );
+    box-shadow: 0 10px 22px rgba(214, 31, 44, 0.08);
+}
+
+.navBtn > span:first-child {
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.navMeta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    font-size: 12px;
+    line-height: 1;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.75);
+    color: var(--muted);
+    white-space: nowrap;
+}
+
+.navBtn.active .pill {
+    border-color: rgba(214, 31, 44, 0.26);
+    color: #b1121f;
+    background: rgba(214, 31, 44, 0.06);
+}
+
+.sideFoot {
+    margin-top: auto;
+    padding: 12px 6px 2px;
+    display: grid;
+    gap: 10px;
+}
+
+/* ---------- Topbar ---------- */
+.topbar {
+    max-width: var(--max);
+    margin: 0 auto 18px;
+    padding: 16px 18px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+.topTitle b {
+    display: block;
+    font-size: 16px;
+    letter-spacing: 0.2px;
+}
+.topTitle span {
+    display: block;
+    margin-top: 2px;
+    font-size: 13px;
+    color: var(--muted);
+}
+
+.status {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.toast {
+    padding: 8px 10px;
+    border-radius: 12px;
+    border: 1px solid rgba(16, 185, 129, 0.28);
+    background: rgba(16, 185, 129, 0.08);
+    color: #065f46;
+    font-weight: 700;
+    font-size: 13px;
+    display: none;
+}
+.toast.show {
+    display: inline-flex;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+    appearance: none;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    padding: 10px 14px;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition:
+        transform 0.12s ease,
+        box-shadow 0.12s ease,
+        border-color 0.12s ease,
+        background 0.12s ease;
+}
+
+.btn:hover {
+    border-color: rgba(214, 31, 44, 0.28);
+    box-shadow: 0 10px 22px rgba(17, 24, 39, 0.08);
+    transform: translateY(-1px);
+}
+
+.btn:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.btn.primary {
+    border-color: rgba(214, 31, 44, 0.48);
+    background: linear-gradient(180deg, var(--red) 0%, #c51623 100%);
+    color: #fff;
+    box-shadow: 0 10px 24px rgba(214, 31, 44, 0.18);
+}
+
+.btn.primary:hover {
+    border-color: rgba(214, 31, 44, 0.6);
+    box-shadow: 0 14px 28px rgba(214, 31, 44, 0.2);
+}
+
+.btn:focus-visible {
+    box-shadow: var(--ring);
+}
+
+/* ---------- Sections & Cards ---------- */
+.section {
+    margin-top: var(--gap-lg);
+}
+
+.sectionHead {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 18px 18px 0;
+}
+
+.sectionHead h2 {
+    margin: 0;
+    font-size: 18px;
+    letter-spacing: 0.2px;
+}
+
+.sectionHead p {
+    margin: 6px 0 0;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.45;
+    max-width: 70ch;
+}
+
+.sectionBody {
+    margin-top: 12px;
+    padding: 18px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+.note {
+    margin-top: 14px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    border: 1px dashed rgba(214, 31, 44, 0.26);
+    background: rgba(214, 31, 44, 0.04);
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+.divider {
+    height: 1px;
+    background: var(--border-2);
+    margin: 14px 0;
+}
+
+/* ---------- Grids ---------- */
+.grid2 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--gap);
+}
+
+.cardGrid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--gap);
+}
+
+.itemCard {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: linear-gradient(
+        180deg,
+        var(--surface) 0%,
+        var(--surface-2) 100%
+    );
+    padding: 16px;
+    box-shadow: 0 10px 20px rgba(17, 24, 39, 0.05);
+}
+
+.itemTop {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.itemTop b {
+    font-size: 14px;
+}
+
+/* ---------- Form Fields ---------- */
+.field {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+label {
+    font-size: 13px;
+    font-weight: 800;
+    color: #111827;
+}
+
+.labelRow {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.hint {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 600;
+}
+
+input[type="text"],
+input[type="url"],
+input[type="email"],
+input[type="number"],
+textarea,
+select {
+    width: 100%;
+    padding: 11px 12px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: #fff;
+    color: var(--text);
+    transition:
+        box-shadow 0.12s ease,
+        border-color 0.12s ease,
+        background 0.12s ease;
+}
+
+textarea {
+    min-height: 110px;
+    resize: vertical;
+    line-height: 1.5;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #9aa3af;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: rgba(214, 31, 44, 0.55);
+    box-shadow: var(--ring);
+}
+
+/* ---------- Uploader (custom file UI) ---------- */
+.uploader .preview,
+.uploader .path {
+    display: none; /* from legacy */
+}
+
+.uploadBar {
+    display: grid;
+    grid-template-columns: 120px 1fr 110px;
+    gap: 10px;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: #fff;
+}
+
+.uploadBar input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    width: 0;
+    height: 0;
+}
+
+.uploadPick {
+    border: 1px solid var(--border);
+    background: #fff;
+    padding: 10px 12px;
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: 13px;
+    transition:
+        border-color 0.12s ease,
+        box-shadow 0.12s ease,
+        transform 0.12s ease;
+}
+
+.uploadPick:hover {
+    border-color: rgba(214, 31, 44, 0.3);
+    box-shadow: 0 10px 20px rgba(17, 24, 39, 0.06);
+    transform: translateY(-1px);
+}
+
+.uploadName {
+    font-size: 13px;
+    color: var(--muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.uploadRemove {
+    border: 1px solid rgba(214, 31, 44, 0.28);
+    background: rgba(214, 31, 44, 0.06);
+    color: #b1121f;
+    padding: 10px 12px;
+    border-radius: 12px;
+    font-weight: 900;
+    font-size: 13px;
+    transition:
+        transform 0.12s ease,
+        box-shadow 0.12s ease,
+        border-color 0.12s ease,
+        background 0.12s ease;
+}
+
+.uploadRemove:hover {
+    border-color: rgba(214, 31, 44, 0.45);
+    box-shadow: 0 10px 20px rgba(214, 31, 44, 0.1);
+    transform: translateY(-1px);
+}
+
+.uploadRemove:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* ---------- Details / Summary ---------- */
+details {
+    border-radius: var(--radius);
+}
+
+summary {
+    list-style: none;
+}
+summary::-webkit-details-marker {
+    display: none;
+}
+
+details[open] {
+    background: rgba(214, 31, 44, 0.02);
+}
+
+/* ---------- Actions Footer ---------- */
+.actions {
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border-2);
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+/* ---------- Minor Typography ---------- */
+h3 {
+    font-size: 15px;
+    letter-spacing: 0.2px;
+}
+h4 {
+    font-size: 14px;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1100px) {
+    :root {
+        --side-w: 280px;
+    }
+    .cardGrid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 860px) {
+    .app {
+        grid-template-columns: 1fr;
+    }
+    .side {
+        position: relative;
+        height: auto;
+        border-right: 0;
+        border-bottom: 1px solid var(--border);
+    }
+    .main {
+        padding: 16px 14px 30px;
+    }
+    .topbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .status {
+        justify-content: space-between;
+    }
+}
+
+@media (max-width: 720px) {
+    .grid2 {
+        grid-template-columns: 1fr;
+    }
+    .cardGrid {
+        grid-template-columns: 1fr;
+    }
+    .uploadBar {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+    .uploadPick,
+    .uploadRemove {
+        width: 100%;
+    }
+}
+
+/* ---------- Reduced Motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* =========================================================
+   FORCE ALL CARDGRID = 1 COLUMN (STACK VERTICAL)
+   scroll cuma kebawah (no 2/3 kolom)
+   ========================================================= */
+
+/* semua cardGrid jadi 1 kolom */
+.cardGrid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+
+    overflow: visible !important; /* jangan scroll kesamping */
+    padding: 0 !important;
+}
+
+/* item card full lebar */
+.cardGrid > .itemCard {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+/* rapihin sectionBody biar ga mepet */
+.sectionBody {
+    padding: 18px !important;
+}
+
+/* grid2 (2 kolom input) tetap boleh 2 kolom di layar gede */
+.grid2 {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 18px !important;
+}
+
+/* tapi kalau layar kecil, grid2 jadi 1 kolom */
+@media (max-width: 720px) {
+    .grid2 {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* nav jangan kelihatan dulu pas loading biar ga kedip */
+html.cms-loading .nav {
+    visibility: hidden;
+}
+html.cms-ready .nav {
+    visibility: visible;
+}
+
+/* =========================
+   Activities Date Row (3 kolom 1 baris)
+   ========================= */
+.actDateRow {
+    display: grid !important;
+    grid-template-columns: 1.2fr 0.8fr 1fr !important;
+    gap: 10px !important;
+    align-items: end;
+}
+
+/* Mobile: jadi 1 kolom */
+@media (max-width: 720px) {
+    .actDateRow {
+        grid-template-columns: 1fr !important;
+    }
+    /* ===== Activity Date Row: selalu 1 baris (Month/Date/Year) ===== */
+    .actDateRow {
+        display: grid !important;
+        grid-template-columns: 1.2fr 0.8fr 1fr !important;
+        gap: 10px !important;
+        align-items: center;
+    }
+
+    /* penting biar select ga “ngedorong” grid */
+    .actDateRow .field {
+        margin: 0 !important;
+        min-width: 0;
+    }
+    .actDateRow select {
+        min-width: 0;
+    }
+}
+
+/* =========================
+   Custom Select (anti default browser look)
+   ========================= */
+.selectCustom {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    width: 100%;
+    padding: 11px 44px 11px 12px; /* space buat arrow */
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background-color: #fff;
+    color: var(--text);
+    line-height: 1.2;
+
+    /* arrow custom via inline SVG */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath d='M5.5 7.5l4.5 5 4.5-5' fill='none' stroke='%236b7280' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 18px 18px;
+
+    transition:
+        box-shadow 0.12s ease,
+        border-color 0.12s ease,
+        background 0.12s ease;
+}
+
+.selectCustom:focus {
+    border-color: rgba(214, 31, 44, 0.55);
+    box-shadow: var(--ring);
+}
+
+/* Fix utama: option jangan “invisible” */
+.selectCustom option {
+    background: #fff !important;
+    color: #111827 !important;
+}
+
+/* Placeholder option */
+.selectCustom option[value=""] {
+    color: #6b7280 !important;
+}
+
+/* Disabled select (kalau suatu saat kepake) */
+.selectCustom:disabled {
+    background-color: #f3f4f6;
+    color: #9ca3af;
+    cursor: not-allowed;
+}
+
+.selectCustom {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    width: 100%;
+    padding: 11px 44px 11px 12px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    background-color: #fff;
+    color: var(--text);
+    font-weight: 700;
+
+    box-shadow: 0 10px 18px rgba(17, 24, 39, 0.05);
+    transition:
+        transform 0.12s ease,
+        box-shadow 0.12s ease,
+        border-color 0.12s ease;
+}
+
+.selectCustom:hover {
+    border-color: rgba(214, 31, 44, 0.28);
+    box-shadow: 0 14px 26px rgba(17, 24, 39, 0.08);
+    transform: translateY(-1px);
+}
+
+.selectCustom:focus {
+    border-color: rgba(214, 31, 44, 0.55);
+    box-shadow: var(--ring);
+    transform: translateY(0);
+}
+
+/* arrow */
+.selectCustom {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath d='M5.5 7.5l4.5 5 4.5-5' fill='none' stroke='%236b7280' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 18px 18px;
+}
+
+.topbar .status .btn.primary {
+    display: none !important;
+}
