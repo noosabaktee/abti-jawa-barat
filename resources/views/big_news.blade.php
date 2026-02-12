@@ -40,8 +40,8 @@
         @endif
     </td>
     <td class="actions">
-        <a href="#" class="btn btn-view">View</a>
-        <a href="#" class="btn btn-edit">Edit</a>
+       <a href="{{ route('viewBignews.index') }}" class="btn btn-view">View</a> <a href="{{ route('editBignews.index') }}" class="btn btn-edit">Edit</a>
+
         <form id="deleteForm{{ $loop->index }}"
       action="{{ route('big_news.destroy', $loop->index) }}"
       method="POST">
