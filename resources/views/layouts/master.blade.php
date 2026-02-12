@@ -6,22 +6,32 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title', 'Handball')</title>
      @vite(['resources/css/edit-home.css', 'resources/js/edit-home.js'])
+     <script>
+      function toggleSidebar() {
+    document.querySelector('.side').classList.toggle('show');
+    document.querySelector('.overlay').classList.toggle('show');
+  }
+     </script>
 </head>
 <body>
     <div class="app">
+      <div class="overlay" onclick="toggleSidebar()"></div>
+
         @include('layouts.sidebar', ['page' => $page])
     
         <main class="main">
             
     <div class="topbar">
+      <button class="hamburger" onclick="toggleSidebar()">☰</button>
+
       <div class="topTitle">
         <b>Home Editor</b>
         <span>Website ABTI Jabar</span>
       </div>
 
-      <div class="status">
+      <!-- <div class="status">
                 <button type="button" class="btn primary" onclick="document.getElementById('saveBtn').click()">Save Changes</button>
-      </div>
+      </div> -->
     </div>
     <div class="content">
         <div class="section">
