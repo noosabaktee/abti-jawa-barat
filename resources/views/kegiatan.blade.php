@@ -27,7 +27,7 @@
           <tr>
               <th>Nama</th>
               <th>Deskripsi</th>
-              <th>Link</th>
+              <th>Slug</th>
               <th>Tanggal</th>
               <th>Image</th>
               <th>Action</th>

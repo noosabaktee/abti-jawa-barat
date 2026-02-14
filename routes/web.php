@@ -36,7 +36,6 @@ Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index
 Route::get('/program-kerja', [ProgramKerjaController::class, 'index'])->name('program_kerja.index');
 Route::get('/sponsor', [SponsorController::class, 'index'])->name('sponsor.index');
 Route::get('/viewBignews', [ViewBigNewsController::class, 'index'])->name('viewBignews.index');
-Route::get('/editBignews', [EditBigNewsController::class, 'index'])->name('editBignews.index');
 Route::resource('kegiatan', KegiatanController::class); 
 
 

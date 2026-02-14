@@ -3,125 +3,115 @@
 @section('title', 'Big News')
 
 @section('content')
- <div >
-                  <div class="section">
-                    <div class="sectionHead">
-                      <div>
-                        <h2>Big News</h2>
-                        <p></p>
-                      </div>
-                    <div class="actions" style="margin-top: -20px ;justify-content: flex-end;">
-                  <button id="saveBtn" class="btn primary" type="submit">Add Big News</button>
-                </div>
-                    </div>
-
-                    <div class="table-wrapper">
-        <table class="custom-table">
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Link</th>
-                    <th>Image</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-          @foreach($bignews as $item)
-          <tr>
-              <td>{{ $item['title'] }}</td>
-              <td>
-                  <a href="{{ $item['link'] }}">{{ $item['link'] }}</a>
-              </td>
-              <td>
-                  @if($item['image'])
-                      <span class="status uploaded">Uploaded</span>
-                  @else
-                      <span class="status not-uploaded">Not Uploaded</span>
-                  @endif
-              </td>
-              <td class="actions">
-                <a href="{{ route('viewBignews.index') }}" class="btn btn-view">View</a> <a href="{{ route('editBignews.index') }}" class="btn btn-edit">Edit</a>
-
-                  <form id="deleteForm{{ $loop->index }}"
-                action="{{ route('big_news.destroy', $loop->index) }}"
-                method="POST">
-              @csrf
-              @method('DELETE')
-
-              <button type="button"
-                  class="btn btn-delete"
-                  onclick="showAlert(
-                      'Hapus Data',
-                      'Data ini akan dihapus permanen.',
-                      function() {
-                          document.getElementById('deleteForm{{ $loop->index }}').submit();
-                      }
-                  )">
-                  Delete
-              </button>
-          </form>
-
-
-        </td>
-      </tr>
-      @endforeach
-          </tbody>
-
-
-
-
-              </table>
-          </div>
-          <div class="table-bottom">
-              <div class="pagination-custom">
-
-                  {{-- Previous --}}
-                  @if ($bignews->onFirstPage())
-                      <span class="disabled">&lt;</span>
-                  @else
-                      <a href="{{ $bignews->previousPageUrl() }}">&lt;</a>
-                  @endif
-
-                  {{-- Page Numbers --}}
-                  @for ($i = 1; $i <= $bignews->lastPage(); $i++)
-                      @if ($i == $bignews->currentPage())
-                          <span class="active">{{ $i }}</span>
-                      @else
-                          <a href="{{ $bignews->url($i) }}">{{ $i }}</a>
-                      @endif
-                  @endfor
-
-                  {{-- Next --}}
-                  @if ($bignews->hasMorePages())
-                      <a href="{{ $bignews->nextPageUrl() }}">&gt;</a>
-                  @else
-                      <span class="disabled">&gt;</span>
-                  @endif
-
-              </div>
-          </div>
-
-
-
-               
-              </div>
+<div>
+    <div class="section">
+        <div class="sectionHead">
+            <div>
+                <h2>Big News</h2>
             </div>
 
-
-
-
-            {{-- alert --}}
-            <div id="customAlert" class="alert-overlay">
-    <div class="alert-box">
-        <h3 id="alertTitle">Konfirmasi</h3>
-        <p id="alertMessage">Yakin mau hapus data ini?</p>
-
-        <div class="alert-actions">
-            <button id="cancelBtn" class="btn btn-edit">Batal</button>
-            <button id="confirmBtn" class="btn btn-delete">Hapus</button>
+            <div class="actions" style="margin-top:-20px; justify-content:flex-end;">
+                <a href="{{ route('big_news.create') }}" class="btn primary">
+                    Add Big News
+                </a>
+            </div>
         </div>
+
+        {{-- SUCCESS MESSAGE --}}
+        @if(session('success'))
+            <div style="color:green; margin-bottom:15px;">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        <div class="table-wrapper">
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Slug</th>
+                        <th>Content</th>
+                        <th>Image</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @forelse($bignews as $item)
+                        <tr>
+                            <td>{{ $item->title }}</td>
+
+                            <td>{{ $item->slug }}</td>
+                            <td>
+                            {{ \Illuminate\Support\Str::limit(strip_tags($item->content), 20, '...') }}
+                        </td>
+
+                            <td>
+                                @if($item->image)
+                                    <span class="status uploaded">
+                                       Uploaded
+                                    </span>
+                                @else
+                                    <span class="status not-uploaded">
+                                       Not Uploaded
+                                    </span>
+                                @endif
+                            </td>
+
+                            <td class="actions">
+
+                               <a href="{{ route('big_news.show', $item) }}"
+                                    class="btn btn-view">
+                                      View
+                                  </a>
+
+                                  <a href="{{ route('big_news.edit', $item) }}"
+                                    class="btn btn-edit">
+                                      Edit
+                                  </a>
+
+
+                                <form id="deleteForm{{ $item->id }}"
+                                      action="{{ route('big_news.destroy', $item->id) }}"
+                                      method="POST"
+                                      style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+
+                                    <button type="button"
+                                            class="btn btn-delete"
+                                            onclick="showAlert(
+                                                'Hapus Data',
+                                                'Data ini akan dihapus permanen.',
+                                                function() {
+                                                    document.getElementById('deleteForm{{ $item->id }}').submit();
+                                                }
+                                            )">
+                                        Delete
+                                    </button>
+                                </form>
+
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" style="text-align:center;">
+                                Data belum tersedia
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+
+        {{-- Pagination --}}
+        <div class="table-bottom">
+            {{ $bignews->links() }}
+        </div>
+
     </div>
 </div>
+@endsection
 
 
 <script>
@@ -370,4 +360,3 @@
                                       </div>
                 </div> --}}
             {{-- backup --}}
-@endsection
