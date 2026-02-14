@@ -2,63 +2,118 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kegiatan;
 use Illuminate\Http\Request;
 
 class KegiatanController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        return view('kegiatan', ['page' => 'kegiatan']);
-    }
+   public function index()
+{
+    $kegiatan = Kegiatan::latest()->paginate(10);
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    return view('kegiatan', [
+        'kegiatan' => $kegiatan,
+        'page' => 'kegiatan'
+    ]);
+}
+
+
     public function create()
     {
-        //
+        return view('add-kegiatan', [
+            'page' => 'kegiatan'
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
-    {
-        //
+{
+    $request->validate([
+        'name'  => 'required|string|max:255',
+        'date'  => 'required|date',
+        'desc'  => 'required|string',
+        'slug'  => 'nullable|url',
+        'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+    ]);
+
+    $imagePath = null;
+
+    if ($request->hasFile('image')) {
+        $imagePath = $request->file('image')->store('kegiatan', 'public');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    \App\Models\Kegiatan::create([
+        'name'  => $request->name,
+        'date'  => $request->date,
+        'desc'  => $request->desc,
+        'slug'  => $request->slug,
+        'image' => $imagePath,
+    ]);
+
+    return redirect()
+        ->route('kegiatan.index')
+        ->with('success', 'Kegiatan berhasil ditambahkan');
+}
+    public function show($id)
     {
-        //
+        $kegiatan = Kegiatan::findOrFail($id);
+
+        return view('view-kegiatan', [
+            'kegiatan' => $kegiatan,
+            'page' => 'kegiatan'
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $kegiatan = Kegiatan::findOrFail($id);
+
+        return view('edit-kegiatan', [
+            'kegiatan' => $kegiatan,
+            'page' => 'kegiatan'
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
+    public function update(Request $request, Kegiatan $kegiatan)
+{
+    $request->validate([
+        'name'  => 'required|string|max:255',
+        'date'  => 'required|date',
+        'desc'  => 'required|string',
+        'slug'  => 'nullable|string|max:255',
+        'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
+    ]);
+
+    $data = $request->only([
+        'name',
+        'date',
+        'desc',
+        'slug'
+    ]);
+
+    if ($request->hasFile('image')) {
+
+        // optional: hapus image lama
+        if ($kegiatan->image && \Storage::disk('public')->exists($kegiatan->image)) {
+            \Storage::disk('public')->delete($kegiatan->image);
+        }
+
+        $data['image'] = $request->file('image')->store('kegiatan', 'public');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    $kegiatan->update($data);
+
+    return redirect()
+            ->route('kegiatan.index')
+            ->with('success', 'Kegiatan berhasil diperbarui.');
+}
+
+
+    public function destroy($id)
     {
-        //
+        $kegiatan = Kegiatan::findOrFail($id);
+        $kegiatan->delete();
+
+        return redirect()->route('kegiatan.index')
+            ->with('success', 'Data berhasil dihapus');
     }
 }
