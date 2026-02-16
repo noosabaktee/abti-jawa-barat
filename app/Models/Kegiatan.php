@@ -15,4 +15,9 @@ class Kegiatan extends Model
         'date',
         'image',
     ];
+    public function getRouteKeyName()
+{
+    return 'slug';
+}
+
 }

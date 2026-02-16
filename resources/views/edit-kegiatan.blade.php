@@ -10,9 +10,9 @@
 
     <div class="bignews-wrapper">
 
-        <form action="{{ route('kegiatan.update', $kegiatan->id) }}"
-              method="POST"
-              enctype="multipart/form-data">
+        <form action="{{ route('kegiatan.update', $kegiatan) }}"
+      method="POST"
+      enctype="multipart/form-data">    
             @csrf
             @method('PUT')
 

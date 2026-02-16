@@ -18,12 +18,12 @@ use App\Http\Controllers\EditBigNewsController;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 
-Route::get('/', function () {
+Route::get('/hero', function () {
     return view('welcome');
 });
 
 Route::get('/about', [AboutController::class, 'index'])->name('about.index');
-Route::get('/anggota', [AnggotaController::class, 'index'])->name('anggota.index');
+Route::resource('anggota', AnggotaController::class);
 Route::get('/archives', [ArchivesController::class, 'index'])->name('archives.index');
 Route::get('/big-news', [BigNewsController::class, 'index'])->name('big_news.index');
 Route::delete('/big-news/{id}', [BigNewsController::class, 'destroy'])->name('big_news.destroy');

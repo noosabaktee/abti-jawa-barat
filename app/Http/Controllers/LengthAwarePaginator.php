@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator; // <-- WAJIB
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class BigNewsController extends Controller
 {

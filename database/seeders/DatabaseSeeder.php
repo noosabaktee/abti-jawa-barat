@@ -28,5 +28,9 @@ class DatabaseSeeder extends Seeder
     $this->call([
         BigNewsSeeder::class,
     ]);
+    $this->call([
+        AnggotaSeeder::class,
+    ]);
     }
+
 }

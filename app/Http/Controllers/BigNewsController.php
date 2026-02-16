@@ -26,36 +26,38 @@ class BigNewsController extends Controller
     ]);
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'title'   => 'required|string|max:255',
-            'content' => 'nullable|string',
-            'image'   => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048'
-        ]);
+   public function store(Request $request)
+{
+    $request->validate([
+        'title'   => 'required|string|max:255',
+        'content' => 'nullable|string',
+        'image'   => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048'
+    ]);
 
-        $slug = Str::slug($request->title);
+    $slug = Str::slug($request->title);
 
-        if (BigNews::where('slug', $slug)->exists()) {
-            $slug .= '-' . time();
-        }
-
-        $imagePath = null;
-
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')
-                ->store('bignews', 'public');
-        }
-
-        BigNews::create([
-            'title'   => $request->title,
-            'slug'    => $slug,
-            'image'   => $imagePath,
-            'content' => $request->content,
-        ]);
-
-      
+    if (BigNews::where('slug', $slug)->exists()) {
+        $slug .= '-' . time();
     }
+
+    $imagePath = null;
+
+    if ($request->hasFile('image')) {
+        $imagePath = $request->file('image')
+            ->store('bignews', 'public');
+    }
+
+    BigNews::create([
+        'title'   => $request->title,
+        'slug'    => $slug,
+        'image'   => $imagePath,
+        'content' => $request->content,
+    ]);
+
+    return redirect()->route('big_news.index')
+        ->with('success', 'Big News berhasil ditambahkan');
+}
+
 
     // ======================
     // SHOW
