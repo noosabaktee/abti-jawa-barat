@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 
@@ -9,36 +10,36 @@ class BigNewsController extends Controller
     /**
      * Display a listing of the resource.
      */
-   public function index()
-{
-    $data = collect();
+    public function index()
+    {
+        $data = collect();
 
-    // dummy data
-    for ($i = 1; $i <= 35; $i++) {
-        $data->push([
-            'title' => 'Big News ' . $i,
-            'link' => 'https://example.com/news-' . $i,
-            'image' => $i % 2 == 0 ? 'image.jpg' : null,
+        // dummy data
+        for ($i = 1; $i <= 35; $i++) {
+            $data->push([
+                'title' => 'Big News ' . $i,
+                'link' => 'https://example.com/news-' . $i,
+                'image' => $i % 2 == 0 ? 'image.jpg' : null,
+            ]);
+        }
+
+        $perPage = 10;
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $currentItems = $data->slice(($currentPage - 1) * $perPage, $perPage)->values();
+
+        $bignews = new LengthAwarePaginator(
+            $currentItems,
+            $data->count(),
+            $perPage,
+            $currentPage,
+            ['path' => request()->url()]
+        );
+
+        return view('big_news', [
+            'bignews' => $bignews,   // INI YANG WAJIB ADA
+            'page' => 'big-news'
         ]);
     }
-
-    $perPage = 10;
-    $currentPage = LengthAwarePaginator::resolveCurrentPage();
-    $currentItems = $data->slice(($currentPage - 1) * $perPage, $perPage)->values();
-
-  $bignews = new LengthAwarePaginator(
-    $currentItems,
-    $data->count(),
-    $perPage,
-    $currentPage,
-    ['path' => request()->url()]
-);
-
-    return view('big_news', [
-        'bignews' => $bignews,   // INI YANG WAJIB ADA
-        'page' => 'big-news'
-    ]);
-}
 
 
     /**
@@ -85,10 +86,9 @@ class BigNewsController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy($id)
-{
+    {
 
-    return redirect()->route('big_news.index')
-        ->with('success', 'Data berhasil dihapus');
-}
-
+        return redirect()->route('big_news.index')
+            ->with('success', 'Data berhasil dihapus');
+    }
 }

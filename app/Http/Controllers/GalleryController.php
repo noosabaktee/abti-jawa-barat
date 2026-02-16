@@ -13,7 +13,30 @@ class GalleryController extends Controller
      */
     public function index()
     {
-        return view('gallery', ['page' => 'gallery']);
+        $data = collect();
+
+        // dummy data
+        for ($i = 1; $i <= 35; $i++) {
+            $data->push([
+                'title' => 'Big News ' . $i,
+                'link' => 'https://example.com/news-' . $i,
+                'image' => $i % 2 == 0 ? 'image.jpg' : null,
+            ]);
+        }
+
+        $perPage = 10;
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $currentItems = $data->slice(($currentPage - 1) * $perPage, $perPage)->values();
+
+        $bignews = new LengthAwarePaginator(
+            $currentItems,
+            $data->count(),
+            $perPage,
+            $currentPage,
+            ['path' => request()->url()]
+        );
+
+        return view('gallery', ['bignews' => $bignews, 'page' => 'gallery']);
     }
 
     /**
