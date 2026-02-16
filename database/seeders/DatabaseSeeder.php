@@ -25,5 +25,12 @@ class DatabaseSeeder extends Seeder
          $this->call([
         KegiatanSeeder::class,
     ]);
+    $this->call([
+        BigNewsSeeder::class,
+    ]);
+    $this->call([
+        AnggotaSeeder::class,
+    ]);
     }
+
 }

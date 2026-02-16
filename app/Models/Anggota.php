@@ -3,17 +3,23 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Anggota extends Model
 {
     protected $table = 'anggota';
 
-    protected $fillable = [
-        'city',
-        'lead_name',
-        'sec_name',
-        'email',
-        'link',
-        'logo',
-    ];
+   protected $fillable = [
+    'city',
+    'lead_name',
+    'sec_name',
+    'email',
+    'link',
+    'logo',
+    'slug', // WAJIB ADA
+];
+
+  
+
+    
 }

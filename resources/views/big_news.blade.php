@@ -3,125 +3,126 @@
 @section('title', 'Big News')
 
 @section('content')
-<div>
-	<div class="section">
-		<div class="sectionHead">
-			<div>
-				<h2>Big News</h2>
-				<p></p>
-			</div>
-			<div class="actions" style="margin-top: -20px ;justify-content: flex-end;">
-				<button id="saveBtn" class="btn primary" type="submit">Add Big News</button>
-			</div>
-		</div>
+ <div >
+                  <div class="section">
+                    <div class="sectionHead">
+                      <div>
+                        <h2>Big News</h2>
+                        <p></p>
+                      </div>
+                    <div class="actions" style="margin-top: -20px ;justify-content: flex-end;">
+                  <button id="saveBtn" class="btn primary" type="submit">Add Big News</button>
+                </div>
+                    </div>
 
-		<div class="table-wrapper">
-			<table class="custom-table">
-				<thead>
-					<tr>
-						<th>Title</th>
-						<th>Link</th>
-						<th>Image</th>
-						<th>Action</th>
-					</tr>
-				</thead>
-				<tbody>
-					@foreach($bignews as $item)
-					<tr>
-						<td>{{ $item['title'] }}</td>
-						<td>
-							<a href="{{ $item['link'] }}">{{ $item['link'] }}</a>
-						</td>
-						<td>
-							@if($item['image'])
-							<span class="status uploaded">Uploaded</span>
-							@else
-							<span class="status not-uploaded">Not Uploaded</span>
-							@endif
-						</td>
-						<td class="actions">
-							<a href="{{ route('viewBignews.index') }}" class="btn btn-view">View</a> <a href="{{ route('editBignews.index') }}" class="btn btn-edit">Edit</a>
+                    <div class="table-wrapper">
+        <table class="custom-table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Link</th>
+                    <th>Image</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+          @foreach($bignews as $item)
+          <tr>
+              <td>{{ $item['title'] }}</td>
+              <td>
+                  <a href="{{ $item['link'] }}">{{ $item['link'] }}</a>
+              </td>
+              <td>
+                  @if($item['image'])
+                      <span class="status uploaded">Uploaded</span>
+                  @else
+                      <span class="status not-uploaded">Not Uploaded</span>
+                  @endif
+              </td>
+              <td class="actions">
+                <a href="{{ route('viewBignews.index') }}" class="btn btn-view">View</a> <a href="{{ route('editBignews.index') }}" class="btn btn-edit">Edit</a>
 
-							<form id="deleteForm{{ $loop->index }}"
-								action="{{ route('big_news.destroy', $loop->index) }}"
-								method="POST">
-								@csrf
-								@method('DELETE')
+                  <form id="deleteForm{{ $loop->index }}"
+                action="{{ route('big_news.destroy', $loop->index) }}"
+                method="POST">
+              @csrf
+              @method('DELETE')
 
-								<button type="button"
-									class="btn btn-delete"
-									onclick="showAlert(
+              <button type="button"
+                  class="btn btn-delete"
+                  onclick="showAlert(
                       'Hapus Data',
                       'Data ini akan dihapus permanen.',
                       function() {
                           document.getElementById('deleteForm{{ $loop->index }}').submit();
                       }
                   )">
-									Delete
-								</button>
-							</form>
+                  Delete
+              </button>
+          </form>
 
 
-						</td>
-					</tr>
-					@endforeach
-				</tbody>
-
-
-
-
-			</table>
-		</div>
-		<div class="table-bottom">
-			<div class="pagination-custom">
-
-				{{-- Previous --}}
-				@if ($bignews->onFirstPage())
-				<span class="disabled">&lt;</span>
-				@else
-				<a href="{{ $bignews->previousPageUrl() }}">&lt;</a>
-				@endif
-
-				{{-- Page Numbers --}}
-				@for ($i = 1; $i <= $bignews->lastPage(); $i++)
-					@if ($i == $bignews->currentPage())
-					<span class="active">{{ $i }}</span>
-					@else
-					<a href="{{ $bignews->url($i) }}">{{ $i }}</a>
-					@endif
-					@endfor
-
-					{{-- Next --}}
-					@if ($bignews->hasMorePages())
-					<a href="{{ $bignews->nextPageUrl() }}">&gt;</a>
-					@else
-					<span class="disabled">&gt;</span>
-					@endif
-
-			</div>
-		</div>
+        </td>
+      </tr>
+      @endforeach
+          </tbody>
 
 
 
 
-	</div>
+              </table>
+          </div>
+          <div class="table-bottom">
+              <div class="pagination-custom">
+
+                  {{-- Previous --}}
+                  @if ($bignews->onFirstPage())
+                      <span class="disabled">&lt;</span>
+                  @else
+                      <a href="{{ $bignews->previousPageUrl() }}">&lt;</a>
+                  @endif
+
+                  {{-- Page Numbers --}}
+                  @for ($i = 1; $i <= $bignews->lastPage(); $i++)
+                      @if ($i == $bignews->currentPage())
+                          <span class="active">{{ $i }}</span>
+                      @else
+                          <a href="{{ $bignews->url($i) }}">{{ $i }}</a>
+                      @endif
+                  @endfor
+
+                  {{-- Next --}}
+                  @if ($bignews->hasMorePages())
+                      <a href="{{ $bignews->nextPageUrl() }}">&gt;</a>
+                  @else
+                      <span class="disabled">&gt;</span>
+                  @endif
+
+              </div>
+          </div>
+
+
+
+               
+              </div>
+            </div>
+
+
+
+
+            {{-- alert --}}
+            <div id="customAlert" class="alert-overlay">
+    <div class="alert-box">
+        <h3 id="alertTitle">Konfirmasi</h3>
+        <p id="alertMessage">Yakin mau hapus data ini?</p>
+
+        <div class="alert-actions">
+            <button id="cancelBtn" class="btn btn-edit">Batal</button>
+            <button id="confirmBtn" class="btn btn-delete">Hapus</button>
+        </div>
+    </div>
 </div>
-
-
-
-
-{{-- alert --}}
-<div id="customAlert" class="alert-overlay">
-	<div class="alert-box">
-		<h3 id="alertTitle">Konfirmasi</h3>
-		<p id="alertMessage">Yakin mau hapus data ini?</p>
-
-		<div class="alert-actions">
-			<button id="cancelBtn" class="btn btn-edit">Batal</button>
-			<button id="confirmBtn" class="btn btn-delete">Hapus</button>
-		</div>
-	</div>
-</div>
+@endsection
 
 
 <script>
@@ -369,5 +370,5 @@
                       </div>
                                       </div>
                 </div> --}}
-{{-- backup --}}
+            {{-- backup --}}
 @endsection

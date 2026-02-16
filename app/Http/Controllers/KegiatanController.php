@@ -2,21 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Storage;
 use App\Models\Kegiatan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class KegiatanController extends Controller
 {
-   public function index()
-{
-    $kegiatan = Kegiatan::latest()->paginate(10);
+    public function index()
+    {
+        $kegiatan = Kegiatan::latest()->paginate(10);
 
-    return view('kegiatan', [
-        'kegiatan' => $kegiatan,
-        'page' => 'kegiatan'
-    ]);
-}
-
+        return view('kegiatan', [
+            'kegiatan' => $kegiatan,
+            'page' => 'kegiatan'
+        ]);
+    }
 
     public function create()
     {
@@ -26,47 +27,61 @@ class KegiatanController extends Controller
     }
 
     public function store(Request $request)
-{
-    $request->validate([
-        'name'  => 'required|string|max:255',
-        'date'  => 'required|date',
-        'desc'  => 'required|string',
-        'slug'  => 'nullable|url',
-        'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-    ]);
-
-    $imagePath = null;
-
-    if ($request->hasFile('image')) {
-        $imagePath = $request->file('image')->store('kegiatan', 'public');
-    }
-
-    \App\Models\Kegiatan::create([
-        'name'  => $request->name,
-        'date'  => $request->date,
-        'desc'  => $request->desc,
-        'slug'  => $request->slug,
-        'image' => $imagePath,
-    ]);
-
-    return redirect()
-        ->route('kegiatan.index')
-        ->with('success', 'Kegiatan berhasil ditambahkan');
-}
-    public function show($id)
     {
-        $kegiatan = Kegiatan::findOrFail($id);
-
-        return view('view-kegiatan', [
-            'kegiatan' => $kegiatan,
-            'page' => 'kegiatan'
+        $validated = $request->validate([
+            'name'  => 'required|string|max:255',
+            'date'  => 'required|date',
+            'desc'  => 'required|string',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
+
+        // Generate slug unik
+        $baseSlug = Str::slug($validated['name']);
+        $slug = $baseSlug;
+        $i = 1;
+
+        while (Kegiatan::where('slug', $slug)->exists()) {
+            $slug = $baseSlug . '-' . $i++;
+        }
+
+        // Upload image
+        $imagePath = null;
+
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
+            $imagePath = $file->storeAs('kegiatan', $filename, 'public');
+        }
+
+        Kegiatan::create([
+            'name'  => $validated['name'],
+            'date'  => $validated['date'],
+            'desc'  => $validated['desc'],
+            'slug'  => $slug,
+            'image' => $imagePath,
+        ]);
+
+        return redirect()
+            ->route('kegiatan.index')
+            ->with('success', 'Kegiatan berhasil ditambahkan');
     }
 
-    public function edit($id)
-    {
-        $kegiatan = Kegiatan::findOrFail($id);
+    // =========================
+    // SLUG BASED ROUTING
+    // =========================
 
+    public function show($slug)
+{
+    $kegiatan = Kegiatan::where('slug', $slug)->firstOrFail();
+
+    return view('view-kegiatan', [
+        'kegiatan' => $kegiatan,
+        'page' => 'kegiatan'
+    ]);
+}
+
+    public function edit(Kegiatan $kegiatan)
+    {
         return view('edit-kegiatan', [
             'kegiatan' => $kegiatan,
             'page' => 'kegiatan'
@@ -74,46 +89,61 @@ class KegiatanController extends Controller
     }
 
     public function update(Request $request, Kegiatan $kegiatan)
-{
-    $request->validate([
-        'name'  => 'required|string|max:255',
-        'date'  => 'required|date',
-        'desc'  => 'required|string',
-        'slug'  => 'nullable|string|max:255',
-        'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
-    ]);
+    {
+        $validated = $request->validate([
+            'name'  => 'required|string|max:255',
+            'date'  => 'required|date',
+            'desc'  => 'required|string',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048'
+        ]);
 
-    $data = $request->only([
-        'name',
-        'date',
-        'desc',
-        'slug'
-    ]);
+        // Update slug jika name berubah
+        if ($validated['name'] !== $kegiatan->name) {
 
-    if ($request->hasFile('image')) {
+            $baseSlug = Str::slug($validated['name']);
+            $slug = $baseSlug;
+            $i = 1;
 
-        // optional: hapus image lama
-        if ($kegiatan->image && \Storage::disk('public')->exists($kegiatan->image)) {
-            \Storage::disk('public')->delete($kegiatan->image);
+            while (
+                Kegiatan::where('slug', $slug)
+                    ->where('id', '!=', $kegiatan->id)
+                    ->exists()
+            ) {
+                $slug = $baseSlug . '-' . $i++;
+            }
+
+            $validated['slug'] = $slug;
         }
 
-        $data['image'] = $request->file('image')->store('kegiatan', 'public');
+        // Jika upload gambar baru
+        if ($request->hasFile('image')) {
+
+            if ($kegiatan->image && Storage::disk('public')->exists($kegiatan->image)) {
+                Storage::disk('public')->delete($kegiatan->image);
+            }
+
+            $file = $request->file('image');
+            $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
+            $validated['image'] = $file->storeAs('kegiatan', $filename, 'public');
+        }
+
+        $kegiatan->update($validated);
+
+        return redirect()
+            ->route('kegiatan.index')
+            ->with('success', 'Kegiatan berhasil diperbarui');
     }
 
-    $kegiatan->update($data);
-
-    return redirect()
-            ->route('kegiatan.index')
-            ->with('success', 'Kegiatan berhasil diperbarui.');
-}
-
-
-    public function destroy($id)
+    public function destroy(Kegiatan $kegiatan)
     {
-        $kegiatan = Kegiatan::findOrFail($id);
+        if ($kegiatan->image && Storage::disk('public')->exists($kegiatan->image)) {
+            Storage::disk('public')->delete($kegiatan->image);
+        }
+
         $kegiatan->delete();
 
-        return redirect()->route('kegiatan.index')
+        return redirect()
+            ->route('kegiatan.index')
             ->with('success', 'Data berhasil dihapus');
     }
 }

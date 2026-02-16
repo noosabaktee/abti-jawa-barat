@@ -33,7 +33,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Link</label>
+                        <label>Slug</label>
                         <input type="text" disabled value="{{ $kegiatan->slug }}">
                         
                     </div>
