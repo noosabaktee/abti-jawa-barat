@@ -18,7 +18,7 @@ use App\Http\Controllers\EditBigNewsController;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 
-Route::get('/hero', function () {
+Route::get('/', function () {
     return view('welcome');
 });
 
