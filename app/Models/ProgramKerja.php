@@ -19,4 +19,9 @@ class ProgramKerja extends Model
         'thumbnail_text',
         'image',
     ];
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 }

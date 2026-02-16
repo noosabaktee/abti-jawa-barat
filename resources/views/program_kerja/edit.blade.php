@@ -19,7 +19,7 @@
                     <div class="field">
                         <label>Title</label>
                         <input type="text" name="title"
-                            value="{{ old('title') }}"
+                            value="{{ $programKerja->title ?? old('title') }}"
                             placeholder="Judul program kerja">
                     </div>
 
@@ -27,28 +27,28 @@
                         <div class="field">
                             <label>Hero Meta</label>
                             <input type="text" name="hero_meta"
-                                value="{{ old('hero_meta') }}"
+                                value="{{ $programKerja->hero_meta ?? old('hero_meta') }}"
                                 placeholder="PROGRAM KERJA • 2026">
                         </div>
 
                         <div class="field">
                             <label>Category</label>
                             <input type="text" name="category"
-                                value="{{ old('category') }}"
+                                value="{{ $programKerja->category ?? old('category') }}"
                                 placeholder="Pembinaan / Kompetisi / SDM">
                         </div>
 
                         <div class="field">
                             <label>Year</label>
                             <input type="text" name="year"
-                                value="{{ old('year') }}"
+                                value="{{ $programKerja->year ?? old('year') }}"
                                 placeholder="2026">
                         </div>
 
                         <div class="field">
                             <label>Doc URL</label>
                             <input type="text" name="doc"
-                                value="{{ old('doc') }}"
+                                value="{{ $programKerja->doc ?? old('doc') }}"
                                 placeholder="https://...pdf">
                         </div>
                     </div>
@@ -56,13 +56,13 @@
                     <div class="field">
                         <label>Hero Desc</label>
                         <textarea name="desc" rows="4"
-                            placeholder="Deskripsi detail untuk hero">{{ old('desc') }}</textarea>
+                            placeholder="Deskripsi detail untuk hero">{{ $programKerja->desc ?? old('desc') }}</textarea>
                     </div>
 
                     <div class="field">
                         <label>Thumbnail Text</label>
                         <input type="text" name="thumbnail_text"
-                            value="{{ old('thumbnail_text') }}"
+                            value="{{ $programKerja->thumbnail_text ?? old('thumbnail_text') }}"
                             placeholder="Teks overlay thumbnail (opsional)">
                     </div>
 
@@ -79,7 +79,7 @@
                         <div class="image-section">
                             <div class="image-preview">
                                 <img id="preview-image"
-                                    src="https://via.placeholder.com/150x150"
+                                    src="{{ asset('storage/'.$programKerja->image) }}"
                                     width="150">
                             </div>
 

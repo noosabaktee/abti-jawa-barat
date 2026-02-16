@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\News;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Str;
 
 class NewsContentController extends Controller
 {
@@ -12,31 +14,12 @@ class NewsContentController extends Controller
      */
     public function index()
     {
-        $data = collect();
+        $news = News::latest()->paginate(10);
 
-        // dummy data
-        for ($i = 1; $i <= 35; $i++) {
-            $data->push([
-                'title' => 'Big News ' . $i,
-                'link' => 'https://example.com/news-' . $i,
-                'image' => $i % 2 == 0 ? 'image.jpg' : null,
-            ]);
-        }
-
-        $perPage = 10;
-        $currentPage = LengthAwarePaginator::resolveCurrentPage();
-        $currentItems = $data->slice(($currentPage - 1) * $perPage, $perPage)->values();
-
-        $bignews = new LengthAwarePaginator(
-            $currentItems,
-            $data->count(),
-            $perPage,
-            $currentPage,
-            ['path' => request()->url()]
-        );
-
-   
-        return view('news_content', ['bignews' => $bignews,'page' => 'news-content']);
+        return view('news_content.index', [
+            'news' => $news,
+            'page' => 'news-content'
+        ]);
     }
 
     /**
@@ -44,7 +27,9 @@ class NewsContentController extends Controller
      */
     public function create()
     {
-        //
+        return view('news_content.add', [
+            'page' => 'news-content'
+        ]);
     }
 
     /**
@@ -52,7 +37,38 @@ class NewsContentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'category'   => 'required|string|max:100',
+            'title'   => 'required|string|max:255',
+            'content'   => 'required|string|max:1000',
+            'cta_text'   => 'required|string|max:255',
+            'youtube_url'   => 'required|string|max:255',
+        ]);
+
+        $slug = Str::slug($request->title);
+
+        if (News::where('slug', $slug)->exists()) {
+            $slug .= '-' . time();
+        }
+
+        $imagePath = null;
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')
+                ->store('program_kerja', 'public');
+        }
+
+        News::create([
+            'title'   => $request->title,
+            'slug'    => $slug,
+            'category'   => $request->category,
+            'content'   => $request->content,
+            'cta_text' => $request->cta_text,
+            'youtube_url' => $request->youtube_url,
+        ]);
+
+        return redirect()->route('news-content.index')
+            ->with('success', 'News Content berhasil ditambahkan');
     }
 
     /**

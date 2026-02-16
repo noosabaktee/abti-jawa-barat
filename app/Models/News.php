@@ -14,4 +14,9 @@ class News extends Model
         'cta_text',
         'youtube_url',
     ];
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 }
