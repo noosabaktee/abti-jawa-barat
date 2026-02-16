@@ -3,57 +3,66 @@
 @section('title', 'View Big News')
 
 @section('content')
- <div >
-              <div class="section">
-                <div class="sectionHead">
-                  <div>
-                    <h2>View Big News</h2>
-                    <p></p>
-                  </div>
-                  {{-- <div class="pill">3 items</div> --}}
+<div>
+    <div class="section">
+        <div class="sectionHead">
+            <div>
+                <h2>View Big News</h2>
+            </div>
+        </div>
+
+        <div class="bignews-wrapper">
+
+            <div class="image-section">
+
+                {{-- IMAGE --}}
+                <div class="image-preview">
+                    @if($bignews->image)
+                        <img src="{{ asset('storage/'.$bignews->image) }}" width="200">
+                    @else
+                        <img src="https://via.placeholder.com/200x200?text=No+Image">
+                    @endif
                 </div>
 
-                 <div class="bignews-wrapper">
-    <form action="#" method="POST">
-        @csrf
+                {{-- CONTENT --}}
+                <div class="image-form">
 
-        <div class="image-section">
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input type="text"
+                               value="{{ $bignews->title }}"
+                               disabled>
+                    </div>
 
-            {{-- LEFT: IMAGE --}}
-            <div class="image-preview">
-                <img src="https://via.placeholder.com/150x150" alt="Preview">
+                    <div class="form-group">
+                        <label>Slug</label>
+                        <input type="text"
+                               value="{{ $bignews->slug }}"
+                               disabled>
+                    </div>
+
+                </div>
+
             </div>
 
-            {{-- RIGHT: FORM FIELD --}}
-            <div class="image-form">
-                <div class="form-group">
-                    <label>Title <span>*</span></label>
-                    <input type="text" name="title" disabled value="Input title">
-                </div>
+            {{-- CONTENT TEXT --}}
+            <div class="form-group" style="margin-top:20px;">
+                <label>Content</label>
+                <textarea rows="6" disabled>{{ $bignews->content }}</textarea>
+            </div>
 
-                <div class="form-group">
-                    <label>Link <span>*</span></label>
-                    <input type="text" name="link" disabled value="https://example.com">
-                </div>
+            <div class="form-footer">
+                <a href="{{ route('big_news.index') }}" class="btn-save">
+                    Kembali
+                </a>
             </div>
 
         </div>
-
-       <div class="form-footer">
-    <a href="{{ route('big_news.index') }}" class="btn-save">
-        Kembali
-    </a>
+    </div>
 </div>
+@endsection
 
-
-    </form>
-</div>
-
-          
-              </div>
-            </div>
 
 {{-- <div class="actions">
               <button id="saveBtn" class="btn primary" type="submit">Save Changes</button>
             </div> --}}
-@endsection

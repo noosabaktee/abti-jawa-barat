@@ -14,4 +14,10 @@ class BigNews extends Model
         'image',
         'content',
     ];
+    
+    public function getRouteKeyName()
+{
+    return 'slug';
+}
+
 }
