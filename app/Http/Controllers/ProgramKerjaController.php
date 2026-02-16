@@ -34,7 +34,7 @@ class ProgramKerjaController extends Controller
             ['path' => request()->url()]
         );
 
-        return view('program_kerja', ['bignews' => $bignews, 'page' => 'program-kerja']);
+        return view('program_kerja.index', ['bignews' => $bignews, 'page' => 'program-kerja']);
     }
 
     /**
@@ -42,7 +42,9 @@ class ProgramKerjaController extends Controller
      */
     public function create()
     {
-        //
+        return view('program_kerja.add', [
+            'page' => 'program-kerja'
+        ]);
     }
 
     /**

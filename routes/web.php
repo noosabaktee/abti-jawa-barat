@@ -9,7 +9,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\HeroController;
 use App\Http\Controllers\KegiatanController;
-use App\Http\Controllers\NewsContentController; 
+use App\Http\Controllers\NewsContentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ViewBigNewsController;
 use App\Http\Controllers\ProgramKerjaController;
@@ -33,9 +33,8 @@ Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index
 Route::get('/hero', [HeroController::class, 'index'])->name('hero.index');
 Route::get('/news-content', [NewsContentController::class, 'index'])->name('news_content.index');
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+Route::resource('program-kerja', ProgramKerjaController::class);
 Route::get('/program-kerja', [ProgramKerjaController::class, 'index'])->name('program_kerja.index');
 Route::get('/sponsor', [SponsorController::class, 'index'])->name('sponsor.index');
 Route::get('/viewBignews', [ViewBigNewsController::class, 'index'])->name('viewBignews.index');
-Route::resource('kegiatan', KegiatanController::class); 
-
-
+Route::resource('kegiatan', KegiatanController::class);
