@@ -28,6 +28,7 @@
               <th>Nama</th>
               <th>Deskripsi</th>
               <th>Slug</th>
+              <th>Link</th>
               <th>Tanggal</th>
               <th>Image</th>
               <th>Action</th>
@@ -66,6 +67,15 @@
                     </a>
                 @else
                     -
+                @endif
+            </td>
+           <td>
+                @if($item->link)
+                    <a href="{{ $item->link }}" target="_blank" title="{{ $item->link }}" style="color: var(--red);">
+                        {{ Str::limit($item->link, 25, '...') }}
+                    </a>
+                @else
+                    <span></span>
                 @endif
             </td>
 

@@ -9,12 +9,12 @@ class BigNews extends Model
     protected $table = 'big_news';
 
     protected $fillable = [
-        'title',
-        'slug',
-        'image',
-        'content',
-    ];
-    
+    'title',
+    'slug',
+    'image',
+    'link', 
+    'content',
+];
     public function getRouteKeyName()
 {
     return 'slug';

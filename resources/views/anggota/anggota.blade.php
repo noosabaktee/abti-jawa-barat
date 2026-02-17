@@ -72,16 +72,16 @@
 
            <td class="actions" style="white-space: nowrap;">
 
-    <a href="{{ route('anggota.show', $item->id) }}" class="btn btn-view">
+    <a href="{{ route('anggota.show', $item->slug) }}" class="btn btn-view">
         View
     </a>
 
-    <a href="{{ route('anggota.edit', $item->id) }}" class="btn btn-edit">
+    <a href="{{ route('anggota.edit', $item->slug) }}" class="btn btn-edit">
         Edit
     </a>
 
     <form id="deleteForm{{ $loop->index }}"
-          action="{{ route('anggota.destroy', $item->id) }}"
+         action="{{ route('anggota.destroy', $item->slug) }}"
           method="POST"
           style="display:inline;">
         @csrf

@@ -56,9 +56,13 @@
 
             </div>
 
-            <div class="form-footer">
+            <div class="form-footer" style="display: flex; gap: 10px; margin-top: 20px;">
                 <a href="{{ route('anggota.index') }}" class="btn-upload">
                     Kembali
+                </a>
+                {{-- Tombol Edit mengarah ke slug --}}
+                <a href="{{ route('anggota.edit', $anggota->slug) }}" class="btn-save" style="text-decoration: none; display: flex; align-items: center; justify-content: center; align-item: center;">
+                    Edit Anggota
                 </a>
             </div>
 

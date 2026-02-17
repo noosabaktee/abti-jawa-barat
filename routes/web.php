@@ -18,15 +18,23 @@ use App\Http\Controllers\EditBigNewsController;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 
-Route::get('/hero', function () {
-    return view('welcome');
+Route::get('/', function () {
+    return view('/hero', [
+        'page' => 'home'
+    ]);
 });
+Route::get('/', [HeroController::class, 'index']); 
 
-Route::get('/about', [AboutController::class, 'index'])->name('about.index');
-Route::resource('anggota', AnggotaController::class);
+
+Route::resource('hero', HeroController::class)->only(['index', 'store']);
+
+Route::resource('about', AboutController::class);
+Route::resource('anggota', AnggotaController::class)
+    ->parameters([
+        'anggota' => 'anggota'
+    ]);
 Route::get('/archives', [ArchivesController::class, 'index'])->name('archives.index');
 Route::get('/big-news', [BigNewsController::class, 'index'])->name('big_news.index');
-Route::delete('/big-news/{id}', [BigNewsController::class, 'destroy'])->name('big_news.destroy');
 Route::resource('big_news', BigNewsController::class);
 Route::get('/event', [EventController::class, 'index'])->name('event.index');
 Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');
@@ -34,6 +42,8 @@ Route::get('/hero', [HeroController::class, 'index'])->name('hero.index');
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
 Route::resource('program-kerja', ProgramKerjaController::class);
 Route::resource('news-content', NewsContentController::class);
-Route::get('/sponsor', [SponsorController::class, 'index'])->name('sponsor.index');
+Route::resource('sponsor', SponsorController::class);
 Route::get('/viewBignews', [ViewBigNewsController::class, 'index'])->name('viewBignews.index');
 Route::resource('kegiatan', KegiatanController::class);
+
+
