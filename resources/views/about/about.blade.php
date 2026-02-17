@@ -161,7 +161,7 @@
 <div class="section">
     <div class="sectionHead" style="margin-bottom: 2rem;">
         <div>
-            <h2 style="font-size: 1.875rem; font-weight: 800; color: var(--text);">About Content Manager</h2>
+            <h2 >About Content Manager</h2>
             <p style="color: var(--muted);">Data di bawah akan langsung mengupdate tampilan landing page.</p>
         </div>
     </div>
