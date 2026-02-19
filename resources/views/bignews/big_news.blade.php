@@ -30,6 +30,7 @@
                     <tr>
                         <th>Title</th>
                         <th>Slug</th>
+                        <th>Link</th>
                         <th>Content</th>
                         <th>Image</th>
                         <th>Action</th>
@@ -42,6 +43,15 @@
                             <td>{{ $item->title }}</td>
 
                             <td>{{ $item->slug }}</td>
+                            <td>
+    @if($item->link)
+        <a href="{{ $item->link }}" target="_blank" title="{{ $item->link }}">
+            {{ Str::limit($item->link, 20, '...') }}
+        </a>
+    @else
+        <span style="color: #ccc;">-</span>
+    @endif
+</td>
                             <td>
                             {{ \Illuminate\Support\Str::limit(strip_tags($item->content), 20, '...') }}
                         </td>
@@ -72,7 +82,7 @@
 
 
                                 <form id="deleteForm{{ $item->id }}"
-                                      action="{{ route('big_news.destroy', $item->id) }}"
+                                      action="{{ route('big_news.destroy', $item) }}"
                                       method="POST"
                                       style="display:inline;">
                                     @csrf
@@ -111,8 +121,18 @@
 
     </div>
 </div>
-@endsection
 
+<div id="customAlert" class="alert-overlay">
+  <div class="alert-box">
+    <h3 id="alertTitle">Konfirmasi</h3>
+    <p id="alertMessage">Yakin mau hapus data ini?</p>
+
+    <div class="alert-actions">
+      <button id="cancelBtn" class="btn btn-edit">Batal</button>
+      <button id="confirmBtn" class="btn btn-delete">Hapus</button>
+    </div>
+  </div>
+</div>
 
 <script>
   let confirmCallback = null;
@@ -179,6 +199,9 @@
         }, 800);
     };
 </script>
+
+@endsection
+
 
 
 

@@ -9,17 +9,23 @@ class Anggota extends Model
 {
     protected $table = 'anggota';
 
-   protected $fillable = [
-    'city',
-    'lead_name',
-    'sec_name',
-    'email',
-    'link',
-    'logo',
-    'slug', // WAJIB ADA
-];
+    protected $fillable = [
+        'city',
+        'slug',
+        'lead_name',
+        'sec_name',
+        'email',
+        'link',
+        'logo',
+    ];
 
+public function getRouteKeyName()
+{
+    return 'slug';
+}
+
+}
   
 
     
-}
+

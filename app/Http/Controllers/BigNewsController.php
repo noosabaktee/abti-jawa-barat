@@ -11,19 +11,19 @@ class BigNewsController extends Controller
 {
     public function index()
     {
-        $bignews = BigNews::latest()->paginate(10);
+         $bignews = BigNews::latest()->paginate(10);
 
-        return view('big_news', [
-            'bignews' => $bignews,
-            'page' => 'big-news'
-        ]);
+    return view('bignews.big_news', [
+        'bignews' => $bignews,
+        'page' => 'big-news'
+    ]);
     }
 
     public function create()
     {
-        return view('add-bignews', [
-            'page' => 'big-news'
-        ]);
+        return view('bignews.add-bignews', [
+        'page' => 'big-news'
+    ]);
     }
 
     public function store(Request $request)
@@ -31,6 +31,7 @@ class BigNewsController extends Controller
         $request->validate([
             'title'   => 'required|string|max:255',
             'content' => 'nullable|string',
+            'link'    => 'nullable|url',
             'image'   => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048'
         ]);
 
@@ -47,15 +48,15 @@ class BigNewsController extends Controller
                 ->store('bignews', 'public');
         }
 
-        BigNews::create([
-            'title'   => $request->title,
-            'slug'    => $slug,
-            'image'   => $imagePath,
-            'content' => $request->content,
-        ]);
+            BigNews::create([
+                'title'   => $request->title,
+                'slug'    => $slug,
+                'image'   => $imagePath,
+                'link'    => $request->link,
+                'content' => $request->content,
+            ]);
 
-        return redirect()->route('big_news.index')
-            ->with('success', 'Big News berhasil ditambahkan');
+        return redirect()->route('big_news.index');
     }
 
 
@@ -64,10 +65,10 @@ class BigNewsController extends Controller
     // ======================
     public function show(BigNews $big_news)
     {
-        return view('view-bignews', [
-            'bignews' => $big_news,
-            'page' => 'big-news'
-        ]);
+         return view('bignews.view-bignews', [
+        'bignews' => $big_news,
+        'page' => 'big-news'
+    ]);
     }
 
     // ======================
@@ -75,10 +76,10 @@ class BigNewsController extends Controller
     // ======================
     public function edit(BigNews $big_news)
     {
-        return view('edit-bignews', [
-            'bignews' => $big_news,
-            'page' => 'big-news'
-        ]);
+         return view('bignews.edit-bignews', [
+        'bignews' => $big_news,
+        'page' => 'big-news'
+    ]);
     }
 
     // ======================
@@ -87,10 +88,11 @@ class BigNewsController extends Controller
     public function update(Request $request, BigNews $big_news)
     {
         $request->validate([
-            'title'   => 'required|string|max:255',
-            'content' => 'nullable|string',
-            'image'   => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048'
-        ]);
+        'title'   => 'required|string|max:255',
+        'content' => 'nullable|string',
+        'link'    => 'nullable|url', // Tambahkan validasi link
+        'image'   => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048'
+    ]);
 
         // Generate slug baru
         $slug = Str::slug($request->title);
@@ -116,14 +118,15 @@ class BigNewsController extends Controller
         }
 
         $big_news->update([
-            'title'   => $request->title,
-            'slug'    => $slug,
-            'image'   => $imagePath,
-            'content' => $request->content,
-        ]);
+        'title'   => $request->title,
+        'slug'    => $slug,
+        'image'   => $imagePath,
+        'link'    => $request->link,
+        'content' => $request->content,
+    ]);
 
-        return redirect()->route('big_news.index')
-            ->with('success', 'Big News berhasil diupdate');
+        return redirect()->route('big_news.index');
+            
     }
 
     // ======================
@@ -138,6 +141,6 @@ class BigNewsController extends Controller
         $big_news->delete();
 
         return redirect()->route('big_news.index')
-            ->with('success', 'Big News berhasil dihapus');
+            ->with('success');
     }
 }

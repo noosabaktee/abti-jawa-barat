@@ -13,17 +13,17 @@ class KegiatanController extends Controller
     {
         $kegiatan = Kegiatan::latest()->paginate(10);
 
-        return view('kegiatan', [
-            'kegiatan' => $kegiatan,
-            'page' => 'kegiatan'
-        ]);
+    return view('kegiatan.kegiatan', [
+        'kegiatan' => $kegiatan,
+        'page' => 'kegiatan'
+    ]);
     }
 
     public function create()
     {
-        return view('add-kegiatan', [
-            'page' => 'kegiatan'
-        ]);
+        return view('kegiatan.add-kegiatan', [
+        'page' => 'kegiatan'
+    ]);
     }
 
     public function store(Request $request)
@@ -32,6 +32,7 @@ class KegiatanController extends Controller
             'name'  => 'required|string|max:255',
             'date'  => 'required|date',
             'desc'  => 'required|string',
+            'link'  => 'nullable|url',
             'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
@@ -53,13 +54,14 @@ class KegiatanController extends Controller
             $imagePath = $file->storeAs('kegiatan', $filename, 'public');
         }
 
-        Kegiatan::create([
-            'name'  => $validated['name'],
-            'date'  => $validated['date'],
-            'desc'  => $validated['desc'],
-            'slug'  => $slug,
-            'image' => $imagePath,
-        ]);
+       Kegiatan::create([
+        'name'  => $validated['name'],
+        'date'  => $validated['date'],
+        'desc'  => $validated['desc'],
+        'slug'  => $slug,
+        'image' => $imagePath,
+        'link'  => $validated['link'], // TAMBAHKAN INI
+    ]);
 
         return redirect()
             ->route('kegiatan.index')
@@ -74,7 +76,7 @@ class KegiatanController extends Controller
 {
     $kegiatan = Kegiatan::where('slug', $slug)->firstOrFail();
 
-    return view('view-kegiatan', [
+    return view('kegiatan.view-kegiatan', [
         'kegiatan' => $kegiatan,
         'page' => 'kegiatan'
     ]);
@@ -82,10 +84,10 @@ class KegiatanController extends Controller
 
     public function edit(Kegiatan $kegiatan)
     {
-        return view('edit-kegiatan', [
-            'kegiatan' => $kegiatan,
-            'page' => 'kegiatan'
-        ]);
+       return view('kegiatan.edit-kegiatan', [
+        'kegiatan' => $kegiatan,
+        'page' => 'kegiatan'
+    ]);
     }
 
     public function update(Request $request, Kegiatan $kegiatan)
@@ -94,6 +96,7 @@ class KegiatanController extends Controller
             'name'  => 'required|string|max:255',
             'date'  => 'required|date',
             'desc'  => 'required|string',
+            'link'  => 'nullable|url',
             'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048'
         ]);
 
