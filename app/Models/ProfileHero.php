@@ -4,12 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Gallery extends Model
+class ProfileHero extends Model
 {
+    protected $table = 'profile_hero';
+
     protected $fillable = [
         'title',
-        'date',
-        'cover',
-        'galleries',
+        'desc',
+        'image',
+        'type'
     ];
 }

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ProfileClub;
+use App\Models\ProfileHeader;
+use App\Models\ProfileHero;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 class ProfileController extends Controller
 {
@@ -12,31 +14,18 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        $data = collect();
+        $clubs = ProfileClub::latest()->paginate(10);
+        $indoors = ProfileHero::where('type', 'indoor')->latest()->paginate(10);
+        $beaches = ProfileHero::where('type', 'beach')->latest()->paginate(10);
+        $profileHeader = ProfileHeader::first();
 
-        // dummy data
-        for ($i = 1; $i <= 35; $i++) {
-            $data->push([
-                'title' => 'Big News ' . $i,
-                'link' => 'https://example.com/news-' . $i,
-                'image' => $i % 2 == 0 ? 'image.jpg' : null,
-            ]);
-        }
-
-        $perPage = 10;
-        $currentPage = LengthAwarePaginator::resolveCurrentPage();
-        $currentItems = $data->slice(($currentPage - 1) * $perPage, $perPage)->values();
-
-        $bignews = new LengthAwarePaginator(
-            $currentItems,
-            $data->count(),
-            $perPage,
-            $currentPage,
-            ['path' => request()->url()]
-        );
-
-  
-        return view('profile', ['bignews' => $bignews, 'page' => 'profile']);
+        return view('profile.index', [
+            'clubs' => $clubs,
+            'indoors' => $indoors,
+            'beaches' => $beaches,
+            'profileHeader' => $profileHeader,
+            'page' => 'profile'
+        ]);
     }
 
     /**
@@ -52,7 +41,20 @@ class ProfileController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'black_title' => 'required|string|max:255',
+            'red_title'   => 'required|string|max:255',
+            'subtitle'    => 'required|string|max:500',
+        ]);
+
+        // Logic: Cari baris ID 1, kalau tidak ada maka buat baru (Create),
+        // kalau ada maka timpa (Update).
+        ProfileHeader::updateOrCreate(
+            ['id' => 1], 
+            $validated
+        );
+
+        return redirect()->back()->with('success', 'Header profile berhasil diperbarui!'); 
     }
 
     /**
@@ -76,7 +78,7 @@ class ProfileController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // 
     }
 
     /**

@@ -4,11 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ArchivesPage extends Model
+class EventHeader extends Model
 {
+    protected $table = 'events_header';
+
     protected $fillable = [
-        'eyebrow',
-        'title',
+        'black_title',
+        'red_title',
         'subtitle',
     ];
 }

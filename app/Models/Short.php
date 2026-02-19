@@ -4,11 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ProfileIndoor extends Model
+class Short extends Model
 {
     protected $fillable = [
         'title',
-        'desc',
-        'image',
+        'url',
     ];
 }

@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('profile_clubs', function (Blueprint $table) {
             $table->id();
-            $table->string('slug')->unique();
             $table->string('name');
             $table->string('city')->nullable();
             $table->string('director')->nullable();
@@ -22,6 +21,7 @@ return new class extends Migration
             $table->string('training_venue')->nullable();
             $table->string('email')->nullable();
             $table->string('contact_person')->nullable();
+            $table->string('link')->nullable();
             $table->string('logo')->nullable();
             $table->timestamps();
         });

@@ -1,0 +1,193 @@
+@extends('layouts.master')
+
+@section('title', 'Event')
+
+@section('content')
+<div>
+    <div class="section">
+        <div class="sectionHead">
+            <div>
+                <h2>Event</h2>
+                <p></p>
+            </div>
+            <div class="pill">events</div>
+        </div>
+
+        <div class="sectionBody">
+            <form method="POST" action="{{ route('event.store') }}" enctype="multipart/form-data">
+                @csrf
+                <div class="">
+
+                    <div class="field">
+                        <label>ID (optional)</label>
+                        <input type="text" name="event_id"
+                            value="{{old('event_id')}}"
+                            placeholder="ev-001">
+                    </div>
+
+                    <div class="field">
+                        <label>Nama Event</label>
+                        <input type="text" name="name"
+                            value="{{old('name')}}"
+                            placeholder="Nama event...">
+                    </div>
+
+                    <div class="field">
+                        <label>Category (comma)</label>
+                        <input type="text" name="category"
+                            value="{{old('category')}}"
+                            placeholder="INDOOR,BEACH,WHEELCHAIR">
+                    </div>
+
+                    <div class="field">
+                        <label>Lokasi</label>
+                        <input type="text" name="loc"
+                            value="{{old('loc')}}"
+                            placeholder="Kota Bandung">
+                    </div>
+
+                    <div class="grid2">
+                        <div class="field"><label>Athletes</label>
+                            <input type="text" name="athletes" value="{{old('athletes')}}" placeholder="168">
+                        </div>
+                        <div class="field"><label>Coaches</label>
+                            <input type="text" name="coaches" value="{{old('coaches')}}" placeholder="28">
+                        </div>
+                        <div class="field"><label>Teams</label>
+                            <input type="text" name="teams" value="{{old('teams')}}" placeholder="14">
+                        </div>
+                        <div class="field"><label>Management</label>
+                            <input type="text" name="management" value="{{old('management')}}" placeholder="18">
+                        </div>
+                        <div class="field" style="grid-column:1/-1;"><label>Audience Offline / Day</label>
+                            <input type="text" name="audience_offline" value="{{old('audience_offline')}}" placeholder="750">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label>Website</label>
+                        <input type="text" name="website"
+                            value="{{old('website')}}"
+                            placeholder="https://...">
+                    </div>
+
+                    <div class="field">
+                        <label>Administrator</label>
+                        <input type="text" name="administrator"
+                            value="{{old('administrator')}}"
+                            placeholder="Sekretariat...">
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <!-- Logo upload -->
+                    <div class="field">
+                        <div class="labelRow">
+                            <label>Logo</label>
+                            <span class="hint">jpg/png/webp (Maks 300kb)</span>
+                        </div>
+
+                        <!-- <input type="hidden" name="image" value="0"> -->
+
+                        <div class="image-section">
+                            <div class="image-preview">
+                                <img id="preview-logo"
+                                    src="https://placehold.co/400x400?text=Image"
+                                    width="150">
+                            </div>
+
+                            <div class="image-info">
+                                <label class="btn-upload">
+                                    Upload Image
+                                    <input type="file"
+                                        name="logo"
+                                        id="logo-input"
+                                        hidden>
+                                </label>
+
+                                <p class="hint">
+                                    Max 2MB (JPG, PNG, WEBP)
+                                </p>
+
+                                @error('image')
+                                <small style="color:red">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cover upload -->
+                    <div class="field">
+                        <div class="labelRow">
+                            <label>Cover</label>
+                            <span class="hint">jpg/png/webp (Maks 300kb)</span>
+                        </div>
+
+                        <!-- <input type="hidden" name="image" value="0"> -->
+
+                        <div class="image-section">
+                            <div class="image-preview">
+                                <img id="preview-cover"
+                                    src="https://via.placeholder.com/150x150"
+                                    width="150">
+                            </div>
+
+                            <div class="image-info">
+                                <label class="btn-upload">
+                                    Upload Image
+                                    <input type="file"
+                                        name="cover"
+                                        id="cover-input"
+                                        hidden>
+                                </label>
+
+                                <p class="hint">
+                                    Max 2MB (JPG, PNG, WEBP)
+                                </p>
+
+                                @error('image')
+                                <small style="color:red">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button id="saveBtn" class="btn primary" type="submit">Save Changes</button>
+                </div>
+            </form>
+            @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
+        </div>
+    </div>
+</div>
+
+
+{{-- PREVIEW SCRIPT --}}
+<script>
+    document.getElementById('logo-input').addEventListener('change', function(e) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('preview-logo').src = e.target.result;
+        }
+        reader.readAsDataURL(this.files[0]);
+    });
+
+    document.getElementById('cover-input').addEventListener('change', function(e) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('preview-cover').src = e.target.result;
+        }
+        reader.readAsDataURL(this.files[0]);
+    });
+</script>
+
+@endsection

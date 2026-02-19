@@ -11,34 +11,47 @@
 				<h2>Galeri Kegiatan (IHF)</h2>
 				<p></p>
 			</div>
-			<div class="pill">gallery.*</div>
+
+			<div class="actions">
+				<a href="{{ route('gallery.create') }}" id="saveBtn" class="btn primary">Add Gallery</a>
+			</div>
 		</div>
 
 		<div class="sectionBody">
+			{{-- SUCCESS MESSAGE --}}
+			@if(session('success'))
+			<div style="color:green; margin-bottom:15px;">
+				{{ session('success') }}
+			</div>
+			@endif
 
 			<!-- HEADER -->
 			<h3 style="margin:0 0 10px;">Header</h3>
-			<div class="grid2">
+			<form class="" method="POST" action="{{ route('gallery.header.update') }}" enctype="multipart/form-data">
+				@csrf
 				<div class="field">
 					<label>Header Title (Black)</label>
-					<input type="text" name="gal_head_black"
-						value="tes123"
+					<input type="text" name="black_title"
+						value="{{ $galleryHeader ? $galleryHeader->black_title : '' }}"
 						placeholder="Galeri Kegiatan">
 				</div>
 
 				<div class="field">
 					<label>Header Title (Red)</label>
-					<input type="text" name="gal_head_red"
-						value=""
+					<input type="text" name="red_title"
+						value="{{ $galleryHeader ? $galleryHeader->red_title : '' }}"
 						placeholder="ABTI Jawa Barat">
 				</div>
 
 				<div class="field" style="grid-column: 1 / -1;">
 					<label>Header Subtitle</label>
-					<textarea name="gal_head_sub"
-						placeholder="Ikuti perjalanan ABTI Jawa Barat..."></textarea>
+					<textarea name="subtitle"
+						placeholder="Ikuti perjalanan ABTI Jawa Barat...">{{ $galleryHeader ? $galleryHeader->subtitle : '' }}</textarea>
 				</div>
-			</div>
+				<div class="actions">
+					<button type="submit" id="saveBtn" class="btn primary">Save Changes</button>
+				</div>
+			</form>
 
 			<div class="divider"></div>
 
@@ -51,30 +64,28 @@
 						<thead>
 							<tr>
 								<th>Title</th>
-								<th>Link</th>
-								<th>Image</th>
+								<th>Date</th>
+								<th>Cover</th>
 								<th>Action</th>
 							</tr>
 						</thead>
 						<tbody>
-							@foreach($bignews as $item)
+							@foreach($gallery as $item)
 							<tr>
 								<td>{{ $item['title'] }}</td>
+								<td>{{ $item['date'] }}</td>
 								<td>
-									<a href="{{ $item['link'] }}">{{ $item['link'] }}</a>
-								</td>
-								<td>
-									@if($item['image'])
+									@if($item['cover'])
 									<span class="status uploaded">Uploaded</span>
 									@else
 									<span class="status not-uploaded">Not Uploaded</span>
 									@endif
 								</td>
 								<td class="actions">
-									<a href="{{ route('viewBignews.index') }}" class="btn btn-view">View</a> <a href="{{ route('editBignews.index') }}" class="btn btn-edit">Edit</a>
+									<a href="{{ route('gallery.show', $item['id']) }}" class="btn btn-view">View</a> <a href="{{ route('gallery.edit', $item['id']) }}" class="btn btn-edit">Edit</a>
 
 									<form id="deleteForm{{ $loop->index }}"
-										action="{{ route('big_news.destroy', $loop->index) }}"
+										action="{{ route('gallery.destroy', $item['id']) }}"
 										method="POST">
 										@csrf
 										@method('DELETE')
@@ -102,6 +113,32 @@
 
 
 					</table>
+					{{-- Pagination --}}
+					<div class="table-bottom">
+						<div class="pagination-custom">
+
+							@if ($gallery->onFirstPage())
+							<span class="disabled">&lt;</span>
+							@else
+							<a href="{{ $gallery->previousPageUrl() }}">&lt;</a>
+							@endif
+
+							@for ($i = 1; $i <= $gallery->lastPage(); $i++)
+								@if ($i == $gallery->currentPage())
+								<span class="active">{{ $i }}</span>
+								@else
+								<a href="{{ $gallery->url($i) }}">{{ $i }}</a>
+								@endif
+								@endfor
+
+								@if ($gallery->hasMorePages())
+								<a href="{{ $gallery->nextPageUrl() }}">&gt;</a>
+								@else
+								<span class="disabled">&gt;</span>
+								@endif
+
+						</div>
+					</div>
 				</div>
 			</div>
 
@@ -113,7 +150,4 @@
 	</div>
 </div>
 
-<div class="actions">
-	<button id="saveBtn" class="btn primary" type="submit">Save Changes</button>
-</div>
 @endsection

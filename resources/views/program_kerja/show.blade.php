@@ -55,7 +55,7 @@
 
                     <div class="field">
                         <label>Hero Desc</label>
-                        <textarea name="desc" rows="4"
+                        <textarea disabled name="desc" rows="4"
                             placeholder="Deskripsi detail untuk hero">{{ $programKerja->desc ?? old('desc') }}</textarea>
                     </div>
 
