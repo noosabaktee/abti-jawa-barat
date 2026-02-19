@@ -46,10 +46,32 @@
                         </div>
 
                         <div class="field">
-                            <label>Doc URL</label>
-                            <input type="text" name="doc"
-                                value="{{ old('doc') }}"
-                                placeholder="https://...pdf">
+                            <div class="labelRow">
+                                <label>Upload DOC</label>
+                                <span class="hint">PDF (Maks 1mb)</span>
+                            </div>
+
+                            <div class="uploader">
+                                <div class="uploadBar" data-uploadbar>
+                                    <input
+                                        type="file"
+                                        name="doc"
+                                        accept="application/pdf"
+                                        data-upload-input
+                                        data-current="">
+
+                                    <button type="button" class="uploadPick" data-upload-pick>Choose file</button>
+
+                                    <div class="uploadName" data-upload-name>
+                                        Current: None </div>
+
+                                    <button
+                                        type="button"
+                                        class="uploadRemove"
+                                        data-upload-remove
+                                        data-clear-name="ar_doc_clear_1_1">Remove</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -79,7 +101,7 @@
                         <div class="image-section">
                             <div class="image-preview">
                                 <img id="preview-image"
-                                    src="https://via.placeholder.com/150x150"
+                                    src="https://placehold.co/400x400?text=Image"
                                     width="150">
                             </div>
 

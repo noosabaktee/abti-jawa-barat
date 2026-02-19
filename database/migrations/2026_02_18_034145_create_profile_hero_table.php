@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('archives_pages', function (Blueprint $table) {
+        Schema::create('profile_hero', function (Blueprint $table) {
             $table->id();
-            $table->string('eyebrow')->nullable();
             $table->string('title')->nullable();
-            $table->string('subtitle')->nullable();
+            $table->text('desc')->nullable();
+            $table->string('image')->nullable();
+            $table->string('type')->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('archives_pages');
+        Schema::dropIfExists('profile_hero');
     }
 };

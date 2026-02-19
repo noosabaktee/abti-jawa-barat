@@ -13,8 +13,9 @@
         </div>
 
         <div class="sectionBody">
-            <form action="{{ route('program-kerja.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('program-kerja.update', $programKerja) }}" method="POST" enctype="multipart/form-data">
                 @csrf
+                @method('PUT')
                 <div class="">
                     <div class="field">
                         <label>Title</label>
@@ -46,10 +47,32 @@
                         </div>
 
                         <div class="field">
-                            <label>Doc URL</label>
-                            <input type="text" name="doc"
-                                value="{{ $programKerja->doc ?? old('doc') }}"
-                                placeholder="https://...pdf">
+                            <div class="labelRow">
+                                <label>Upload DOC</label>
+                                <span class="hint">PDF (Maks 1mb)</span>
+                            </div>
+
+                            <div class="uploader">
+                                <div class="uploadBar" data-uploadbar>
+                                    <input
+                                        type="file"
+                                        name="doc"
+                                        accept="application/pdf"
+                                        data-upload-input
+                                        data-current="{{ $programKerja->doc ? asset('storage/'.$programKerja->doc) : '' }}">
+
+                                    <button type="button" class="uploadPick" data-upload-pick>Choose file</button>
+
+                                    <div class="uploadName" data-upload-name>
+                                        Current: None </div>
+
+                                    <button
+                                        type="button"
+                                        class="uploadRemove"
+                                        data-upload-remove
+                                        data-clear-name="ar_doc_clear_1_1">Remove</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
 

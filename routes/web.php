@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\ArchivesController;
@@ -10,30 +9,42 @@ use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\HeroController;
 use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\NewsContentController;
+use App\Http\Controllers\ProfileClubController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ViewBigNewsController;
+use App\Http\Controllers\ProfileHeroController;
 use App\Http\Controllers\ProgramKerjaController;
+use App\Http\Controllers\ShortController;
 use App\Http\Controllers\SponsorController;
-use App\Http\Controllers\EditBigNewsController;
-use Illuminate\Pagination\LengthAwarePaginator;
+use App\Http\Controllers\ViewBigNewsController;
+use Illuminate\Support\Facades\Route;
 
 
-Route::get('/hero', function () {
-    return view('welcome');
+Route::get('/', function () {
+    return view('/hero', [
+        'page' => 'home'
+    ]);
 });
 
-Route::get('/about', [AboutController::class, 'index'])->name('about.index');
-Route::resource('anggota', AnggotaController::class);
-Route::get('/archives', [ArchivesController::class, 'index'])->name('archives.index');
+Route::resource('about', AboutController::class);
+Route::resource('anggota', AnggotaController::class)
+    ->parameters([
+        'anggota' => 'anggota'
+    ]);
 Route::get('/big-news', [BigNewsController::class, 'index'])->name('big_news.index');
-Route::delete('/big-news/{id}', [BigNewsController::class, 'destroy'])->name('big_news.destroy');
 Route::resource('big_news', BigNewsController::class);
-Route::get('/event', [EventController::class, 'index'])->name('event.index');
-Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');
-Route::get('/hero', [HeroController::class, 'index'])->name('hero.index');
-Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+Route::resource('hero', HeroController::class)->only(['index', 'store']);
 Route::resource('program-kerja', ProgramKerjaController::class);
 Route::resource('news-content', NewsContentController::class);
-Route::get('/sponsor', [SponsorController::class, 'index'])->name('sponsor.index');
+Route::resource('event', EventController::class);
+Route::post('/event-header', [EventController::class, 'updateHeader'])->name('event.header.update');
+Route::resource('gallery', GalleryController::class);
+Route::post('/gallery-header', [GalleryController::class, 'updateHeader'])->name('gallery.header.update');
+Route::resource('profile', ProfileController::class);
+Route::resource('profile-club', ProfileClubController::class);
+Route::resource('profile-hero', ProfileHeroController::class);
+Route::resource('sponsor', SponsorController::class);
+Route::resource('archive', ArchivesController::class);
+Route::post('/archive-header', [ArchivesController::class, 'updateHeader'])->name('archive.header.update');
+Route::resource('short', ShortController::class);
 Route::get('/viewBignews', [ViewBigNewsController::class, 'index'])->name('viewBignews.index');
 Route::resource('kegiatan', KegiatanController::class);

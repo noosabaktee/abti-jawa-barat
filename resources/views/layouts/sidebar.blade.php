@@ -65,7 +65,7 @@
       <span class="navMeta"><span class="pill">10 items × 10 photos</span></span>
     </a>
 
-    <a href="{{ route('archives.index') }}" class="navBtn <?= $page === 'archives' ? 'active' : '' ?>">
+    <a href="{{ route('archive.index') }}" class="navBtn <?= $page === 'archives' ? 'active' : '' ?>">
       <span>Archives</span>
       <span class="navMeta"><span class="pill">Accordion + PDF links</span></span>
     </a>

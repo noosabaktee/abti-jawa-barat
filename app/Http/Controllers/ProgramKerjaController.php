@@ -41,9 +41,9 @@ class ProgramKerjaController extends Controller
             'hero_meta'   => 'required|string|max:255',
             'category'   => 'required|string|max:100',
             'year'   => 'required|string|max:10',
-            'doc'   => 'required|string|max:255',
             'desc'   => 'required|string|max:255',
             'thumbnail_text' => 'nullable|string|max:255',
+            'doc'   => 'nullable|file|mimes:pdf|max:2048',
             'image'   => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048'
         ]);
 
@@ -51,6 +51,13 @@ class ProgramKerjaController extends Controller
 
         if (ProgramKerja::where('slug', $slug)->exists()) {
             $slug .= '-' . time();
+        }
+
+        $docPath = null;
+
+        if ($request->hasFile('doc')) {
+            $docPath = $request->file('doc')
+                ->store('program_kerja', 'public');
         }
 
         $imagePath = null;
@@ -66,9 +73,9 @@ class ProgramKerjaController extends Controller
             'hero_meta'   => $request->hero_meta,
             'category'   => $request->category,
             'year'   => $request->year,
-            'doc'   => $request->doc,
             'desc'   => $request->desc,
             'thumbnail_text' => $request->thumbnail_text,
+            'doc'   => $docPath,
             'image'   => $imagePath,
         ]);
 
@@ -108,12 +115,13 @@ class ProgramKerjaController extends Controller
             'hero_meta'   => 'required|string|max:255',
             'category'   => 'required|string|max:100',
             'year'   => 'required|string|max:10',
-            'doc'   => 'required|string|max:255',
+            'doc'   => 'nullable|file|mimes:pdf|max:2048',
             'desc'   => 'required|string|max:255',
             'thumbnail_text' => 'nullable|string|max:255',
             'image'   => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048'
         ]);
 
+        // Generate slug baru
         $slug = Str::slug($request->title);
 
         if (
@@ -124,7 +132,19 @@ class ProgramKerjaController extends Controller
             $slug .= '-' . time();
         }
 
-        $imagePath = null;
+        $docPath = $programKerja->doc;
+
+        if ($request->hasFile('doc')) {
+
+            if ($programKerja->doc && Storage::disk('public')->exists($programKerja->doc)) {
+                Storage::disk('public')->delete($programKerja->doc);
+            }
+
+            $docPath = $request->file('doc')
+                ->store('program_kerja', 'public');
+        }
+
+        $imagePath = $programKerja->image;
 
         if ($request->hasFile('image')) {
 
@@ -136,7 +156,7 @@ class ProgramKerjaController extends Controller
                 ->store('program_kerja', 'public');
         }
 
-        ProgramKerja::create([
+        $programKerja->update([
             'title'   => $request->title,
             'slug'    => $slug,
             'hero_meta'   => $request->hero_meta,
@@ -149,7 +169,7 @@ class ProgramKerjaController extends Controller
         ]);
 
         return redirect()->route('program-kerja.index')
-            ->with('success', 'Program Kerja berhasil ditambahkan');   
+            ->with('success', 'Program Kerja berhasil diperbarui');   
     }
 
     /**

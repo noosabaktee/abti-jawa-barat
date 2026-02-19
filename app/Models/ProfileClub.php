@@ -16,6 +16,7 @@ class ProfileClub extends Model
         'training_venue',
         'email',
         'contact_person',
+        'link',
         'logo',
     ];
 }

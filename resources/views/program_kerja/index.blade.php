@@ -13,13 +13,13 @@
 			<div class="pill">{{$programKerja->count()}} items</div>
 		</div>
 
-		{{-- SUCCESS MESSAGE --}}
-		@if(session('success'))
-		<div style="color:green; margin-bottom:15px;">
-			{{ session('success') }}
-		</div>
-		@endif
 		<div class="sectionBody">
+			{{-- SUCCESS MESSAGE --}}
+			@if(session('success'))
+			<div style="color:green; margin-bottom:15px;">
+				{{ session('success') }}
+			</div>
+			@endif
 			<div class="cardGrid">
 				<div class="table-wrapper">
 					<table class="custom-table">
@@ -81,33 +81,33 @@
 
 
 					</table>
+					{{-- Pagination --}}
+					<div class="table-bottom">
+					  <div class="pagination-custom">
+				
+						@if ($programKerja->onFirstPage())
+						  <span class="disabled">&lt;</span>
+						@else
+						  <a href="{{ $programKerja->previousPageUrl() }}">&lt;</a>
+						@endif
+				
+						@for ($i = 1; $i <= $programKerja->lastPage(); $i++)
+						  @if ($i == $programKerja->currentPage())
+							<span class="active">{{ $i }}</span>
+						  @else
+							<a href="{{ $programKerja->url($i) }}">{{ $i }}</a>
+						  @endif
+						@endfor
+				
+						@if ($programKerja->hasMorePages())
+						  <a href="{{ $programKerja->nextPageUrl() }}">&gt;</a>
+						@else
+						  <span class="disabled">&gt;</span>
+						@endif
+				
+					  </div>
+					</div>
 				</div>
-			</div>
-			{{-- Pagination --}}
-			<div class="table-bottom">
-			  <div class="pagination-custom">
-		
-				@if ($programKerja->onFirstPage())
-				  <span class="disabled">&lt;</span>
-				@else
-				  <a href="{{ $programKerja->previousPageUrl() }}">&lt;</a>
-				@endif
-		
-				@for ($i = 1; $i <= $programKerja->lastPage(); $i++)
-				  @if ($i == $programKerja->currentPage())
-					<span class="active">{{ $i }}</span>
-				  @else
-					<a href="{{ $programKerja->url($i) }}">{{ $i }}</a>
-				  @endif
-				@endfor
-		
-				@if ($programKerja->hasMorePages())
-				  <a href="{{ $programKerja->nextPageUrl() }}">&gt;</a>
-				@else
-				  <span class="disabled">&gt;</span>
-				@endif
-		
-			  </div>
 			</div>
 		</div>
 	</div>
@@ -119,58 +119,5 @@
 </div>
 
 
-
-<div id="customAlert" class="alert-overlay">
-	<div class="alert-box">
-		<h3 id="alertTitle">Konfirmasi</h3>
-		<p id="alertMessage">Yakin mau hapus data ini?</p>
-
-		<div class="alert-actions">
-			<button id="cancelBtn" class="btn btn-edit">Batal</button>
-			<button id="confirmBtn" class="btn btn-delete">Hapus</button>
-		</div>
-	</div>
-</div>
-
-<script>
-let confirmCallback = null;
-
-const alertBox   = document.getElementById('customAlert');
-const alertTitle = document.getElementById('alertTitle');
-const alertMsg   = document.getElementById('alertMessage');
-const cancelBtn  = document.getElementById('cancelBtn');
-const confirmBtn = document.getElementById('confirmBtn');
-
-function showAlert(title, message, callback = null) {
-
-    alertTitle.innerText = title;
-    alertMsg.innerText   = message;
-
-    confirmCallback = callback;
-
-    confirmBtn.innerText = 'Hapus';
-    confirmBtn.classList.remove('loading');
-
-    alertBox.style.display = 'flex';
-}
-
-cancelBtn.onclick = function () {
-    alertBox.style.display = 'none';
-};
-
-confirmBtn.onclick = function () {
-
-    confirmBtn.classList.add('loading');
-    confirmBtn.innerText = 'Menghapus...';
-
-    setTimeout(() => {
-
-        if (typeof confirmCallback === "function") {
-            confirmCallback();
-        }
-
-    }, 600);
-};
-</script>
 
 @endsection

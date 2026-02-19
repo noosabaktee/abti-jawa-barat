@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('archives', function (Blueprint $table) {
             $table->id();
-            $table->string('doc_name');
-            $table->string('doc');
+            $table->string('title');
+            $table->string('meta');
+            $table->json('doc');
             $table->timestamps();
         });
     }

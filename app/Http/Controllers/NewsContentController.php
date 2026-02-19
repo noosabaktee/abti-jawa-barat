@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\News;
+use App\Models\Short;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Str;
 
 class NewsContentController extends Controller
@@ -14,10 +14,12 @@ class NewsContentController extends Controller
      */
     public function index()
     {
-        $news = News::latest()->paginate(10);
+        $newsContent = News::latest()->paginate(10);
+        $shortContent = Short::latest()->paginate(10);
 
         return view('news_content.index', [
-            'news' => $news,
+            'news' => $newsContent,
+            'short' => $shortContent,
             'page' => 'news-content'
         ]);
     }
@@ -51,13 +53,6 @@ class NewsContentController extends Controller
             $slug .= '-' . time();
         }
 
-        $imagePath = null;
-
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')
-                ->store('program_kerja', 'public');
-        }
-
         News::create([
             'title'   => $request->title,
             'slug'    => $slug,
@@ -74,32 +69,70 @@ class NewsContentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(News $newsContent)
     {
-        //
+        return view('news_content.show', [
+            'news' => $newsContent,
+            'page' => 'show news content'
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(News $newsContent)
     {
-        //
+        return view('news_content.edit', [
+            'news' => $newsContent,
+            'page' => 'edit news content'
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, News $newsContent)
     {
-        //
+        $request->validate([
+            'category'   => 'required|string|max:100',
+            'title'   => 'required|string|max:255',
+            'content'   => 'required|string|max:1000',
+            'cta_text'   => 'required|string|max:255',
+            'youtube_url'   => 'required|string|max:255',
+        ]);
+
+        // Generate slug baru
+        $slug = Str::slug($request->title);
+
+        if (
+            News::where('slug', $slug)
+            ->where('id', '!=', $newsContent->id)
+            ->exists()
+        ) {
+            $slug .= '-' . time();
+        }
+
+        $newsContent->update([
+           'title'   => $request->title,
+            'slug'    => $slug,
+            'category'   => $request->category,
+            'content'   => $request->content,
+            'cta_text' => $request->cta_text,
+            'youtube_url' => $request->youtube_url,
+        ]);
+
+        return redirect()->route('news-content.index')
+            ->with('success', 'News Content berhasil diubah');   
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(News $newsContent)
     {
-        //
+        $newsContent->delete();
+
+        return redirect()->route('news-content.index')
+            ->with('success', 'News Content berhasil dihapus');
     }
 }

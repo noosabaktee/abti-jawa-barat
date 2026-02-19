@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Gallery extends Model
+class ArchiveHeader extends Model
 {
+    protected $table = 'archives_header';
+
     protected $fillable = [
+        'eyebrow',
         'title',
-        'date',
-        'cover',
-        'galleries',
+        'subtitle',
     ];
 }
