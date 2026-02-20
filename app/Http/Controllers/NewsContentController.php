@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\NewsExport;
 use App\Models\News;
 use App\Models\Short;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
 
 class NewsContentController extends Controller
 {
@@ -134,5 +136,10 @@ class NewsContentController extends Controller
 
         return redirect()->route('news-content.index')
             ->with('success', 'News Content berhasil dihapus');
+    }
+
+    public function export() 
+    {
+        return Excel::download(new NewsExport, 'news.xlsx');
     }
 }
