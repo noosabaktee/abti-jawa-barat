@@ -51,6 +51,13 @@
 							</tr>
 						</thead>
 						<tbody>
+							@if($news->count() == 0)
+							<tr>
+								<td colspan="6" style="text-align:center;">
+									Belum ada data news
+								</td>
+							</tr>
+							@endif
 							@foreach($news as $item)
 							<tr>
 								<td>{{ $item['title'] }}</td>
@@ -131,6 +138,13 @@
 							</tr>
 						</thead>
 						<tbody>
+							@if($short->count() == 0)
+							<tr>
+								<td colspan="2" style="text-align:center;">
+									Belum ada data short
+								</td>
+							</tr>
+							@endif
 							@foreach($short as $item)
 							<tr>
 								<td>{{ $item['title'] }}</td>

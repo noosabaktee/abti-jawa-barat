@@ -70,6 +70,13 @@
 							</tr>
 						</thead>
 						<tbody>
+							@if($gallery->count() == 0)
+							<tr>
+								<td colspan="4" style="text-align:center;">
+									Belum ada data gallery
+								</td>
+							</tr>
+							@endif
 							@foreach($gallery as $item)
 							<tr>
 								<td>{{ $item['title'] }}</td>
