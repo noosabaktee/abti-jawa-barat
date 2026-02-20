@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', function () {
-    return view('/hero', [
+    return view('welcome', [
         'page' => 'home'
     ]);
 });
@@ -48,3 +48,7 @@ Route::post('/archive-header', [ArchivesController::class, 'updateHeader'])->nam
 Route::resource('short', ShortController::class);
 Route::get('/viewBignews', [ViewBigNewsController::class, 'index'])->name('viewBignews.index');
 Route::resource('kegiatan', KegiatanController::class);
+Route::get('news/export/', [NewsContentController::class, 'export'])->name('news.export');
+Route::post('news/import/', [NewsContentController::class, 'import'])->name('news.import');
+Route::get('shorts/export/', [ShortController::class, 'export'])->name('shorts.export');
+Route::post('shorts/import/', [ShortController::class, 'import'])->name('shorts.import');

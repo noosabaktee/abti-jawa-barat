@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ShortExport;
+use App\Imports\ShortImport;
 use App\Models\Short;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ShortController extends Controller
 {
@@ -35,7 +38,7 @@ class ShortController extends Controller
             'url'   => 'required|string|max:255',
         ]);
 
-       
+
         Short::create([
             'title'   => $request->title,
             'url' => $request->url,
@@ -77,14 +80,14 @@ class ShortController extends Controller
             'url'   => 'required|string|max:255',
         ]);
 
-       
+
         $short->update([
-           'title'   => $request->title,
+            'title'   => $request->title,
             'url' => $request->url,
         ]);
 
         return redirect()->route('news-content.index')
-            ->with('success', 'Short Content berhasil diubah');   
+            ->with('success', 'Short Content berhasil diubah');
     }
 
     /**
@@ -97,5 +100,22 @@ class ShortController extends Controller
 
         return redirect()->route('news-content.index')
             ->with('success', 'Short Content berhasil dihapus');
+    }
+
+    public function export()
+    {
+        return Excel::download(new ShortExport, 'shorts.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'short_file' => 'required|file|mimes:xlsx,xls,csv',
+        ]);
+
+        Excel::import(new ShortImport, $request->file('short_file'));
+
+        return redirect()->route('news-content.index')
+            ->with('success', 'Data Short berhasil diimport');
     }
 }

@@ -67,6 +67,13 @@
 							</tr>
 						</thead>
 						<tbody>
+							@if($event->count() == 0)
+							<tr>
+								<td colspan="8" style="text-align:center;">
+									Belum ada data event
+								</td>
+							</tr>
+							@endif
 							@foreach($event as $item)
 							<tr>
 								<td>{{ $item['event_id'] }}</td>

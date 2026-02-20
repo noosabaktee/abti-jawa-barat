@@ -68,6 +68,13 @@
 							</tr>
 						</thead>
 						<tbody>
+							@if($archive->count() == 0)
+							<tr>
+								<td colspan="3" style="text-align:center;">
+									Belum ada data archive
+								</td>
+							</tr>
+							@endif
 							@foreach($archive as $item)
 							<tr>
 								<td>{{ $item['title'] }}</td>
@@ -108,13 +115,13 @@
 					{{-- Pagination --}}
 					<div class="table-bottom">
 						<div class="pagination-custom">
-		
+
 							@if ($archive->onFirstPage())
 							<span class="disabled">&lt;</span>
 							@else
 							<a href="{{ $archive->previousPageUrl() }}">&lt;</a>
 							@endif
-		
+
 							@for ($i = 1; $i <= $archive->lastPage(); $i++)
 								@if ($i == $archive->currentPage())
 								<span class="active">{{ $i }}</span>
@@ -122,13 +129,13 @@
 								<a href="{{ $archive->url($i) }}">{{ $i }}</a>
 								@endif
 								@endfor
-		
+
 								@if ($archive->hasMorePages())
 								<a href="{{ $archive->nextPageUrl() }}">&gt;</a>
 								@else
 								<span class="disabled">&gt;</span>
 								@endif
-		
+
 						</div>
 					</div>
 				</div>

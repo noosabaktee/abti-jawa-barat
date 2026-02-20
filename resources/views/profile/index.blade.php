@@ -62,6 +62,13 @@
 							</tr>
 						</thead>
 						<tbody>
+							@if($indoors->count() == 0)
+							<tr>
+								<td colspan="4" style="text-align:center;">
+									Belum ada data indoors
+								</td>
+							</tr>
+							@endif
 							@foreach($indoors as $item)
 							<tr>
 								<td>{{ $item['title'] }}</td>
@@ -108,13 +115,13 @@
 					{{-- Pagination --}}
 					<div class="table-bottom">
 						<div class="pagination-custom">
-		
+
 							@if ($indoors->onFirstPage())
 							<span class="disabled">&lt;</span>
 							@else
 							<a href="{{ $indoors->previousPageUrl() }}">&lt;</a>
 							@endif
-		
+
 							@for ($i = 1; $i <= $indoors->lastPage(); $i++)
 								@if ($i == $indoors->currentPage())
 								<span class="active">{{ $i }}</span>
@@ -122,13 +129,13 @@
 								<a href="{{ $indoors->url($i) }}">{{ $i }}</a>
 								@endif
 								@endfor
-		
+
 								@if ($indoors->hasMorePages())
 								<a href="{{ $indoors->nextPageUrl() }}">&gt;</a>
 								@else
 								<span class="disabled">&gt;</span>
 								@endif
-		
+
 						</div>
 					</div>
 				</div>
@@ -150,6 +157,13 @@
 							</tr>
 						</thead>
 						<tbody>
+							@if($beaches->count() == 0)
+							<tr>
+								<td colspan="4" style="text-align:center;">
+									Belum ada data $beaches
+								</td>
+							</tr>
+							@endif
 							@foreach($beaches as $item)
 							<tr>
 								<td>{{ $item['title'] }}</td>
@@ -196,13 +210,13 @@
 					{{-- Pagination --}}
 					<div class="table-bottom">
 						<div class="pagination-custom">
-		
+
 							@if ($beaches->onFirstPage())
 							<span class="disabled">&lt;</span>
 							@else
 							<a href="{{ $beaches->previousPageUrl() }}">&lt;</a>
 							@endif
-		
+
 							@for ($i = 1; $i <= $beaches->lastPage(); $i++)
 								@if ($i == $beaches->currentPage())
 								<span class="active">{{ $i }}</span>
@@ -210,13 +224,13 @@
 								<a href="{{ $beaches->url($i) }}">{{ $i }}</a>
 								@endif
 								@endfor
-		
+
 								@if ($beaches->hasMorePages())
 								<a href="{{ $beaches->nextPageUrl() }}">&gt;</a>
 								@else
 								<span class="disabled">&gt;</span>
 								@endif
-		
+
 						</div>
 					</div>
 				</div>
@@ -242,6 +256,13 @@
 							</tr>
 						</thead>
 						<tbody>
+							@if($clubs->count() == 0)
+							<tr>
+								<td colspan="8" style="text-align:center;">
+									Belum ada data club
+								</td>
+							</tr>
+							@endif
 							@foreach($clubs as $item)
 							<tr>
 								<td>{{ $item['name'] }}</td>
@@ -286,13 +307,13 @@
 					{{-- Pagination --}}
 					<div class="table-bottom">
 						<div class="pagination-custom">
-		
+
 							@if ($clubs->onFirstPage())
 							<span class="disabled">&lt;</span>
 							@else
 							<a href="{{ $clubs->previousPageUrl() }}">&lt;</a>
 							@endif
-		
+
 							@for ($i = 1; $i <= $clubs->lastPage(); $i++)
 								@if ($i == $clubs->currentPage())
 								<span class="active">{{ $i }}</span>
@@ -300,13 +321,13 @@
 								<a href="{{ $clubs->url($i) }}">{{ $i }}</a>
 								@endif
 								@endfor
-		
+
 								@if ($clubs->hasMorePages())
 								<a href="{{ $clubs->nextPageUrl() }}">&gt;</a>
 								@else
 								<span class="disabled">&gt;</span>
 								@endif
-		
+
 						</div>
 					</div>
 				</div>
