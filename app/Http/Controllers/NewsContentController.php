@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\NewsExport;
+use App\Imports\NewsImport;
 use App\Models\News;
 use App\Models\Short;
 use Illuminate\Http\Request;
@@ -141,5 +142,17 @@ class NewsContentController extends Controller
     public function export() 
     {
         return Excel::download(new NewsExport, 'news.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:xlsx,xls,csv',
+        ]);
+
+        Excel::import(new NewsImport, $request->file('file'));
+
+        return redirect()->route('news-content.index')
+            ->with('success', 'Data News berhasil diimport');
     }
 }

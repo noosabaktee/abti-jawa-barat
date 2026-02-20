@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\ShortExport;
+use App\Imports\ShortImport;
 use App\Models\Short;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -104,5 +105,17 @@ class ShortController extends Controller
     public function export()
     {
         return Excel::download(new ShortExport, 'shorts.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'short_file' => 'required|file|mimes:xlsx,xls,csv',
+        ]);
+
+        Excel::import(new ShortImport, $request->file('short_file'));
+
+        return redirect()->route('news-content.index')
+            ->with('success', 'Data Short berhasil diimport');
     }
 }
