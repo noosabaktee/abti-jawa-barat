@@ -8,6 +8,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\HeroController;
 use App\Http\Controllers\KegiatanController;
+use App\Http\Controllers\LiveController;
 use App\Http\Controllers\NewsContentController;
 use App\Http\Controllers\ProfileClubController;
 use App\Http\Controllers\ProfileController;
@@ -16,6 +17,7 @@ use App\Http\Controllers\ProgramKerjaController;
 use App\Http\Controllers\ShortController;
 use App\Http\Controllers\SponsorController;
 use App\Http\Controllers\ViewBigNewsController;
+use App\Http\Controllers\YouTubeController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -48,7 +50,12 @@ Route::post('/archive-header', [ArchivesController::class, 'updateHeader'])->nam
 Route::resource('short', ShortController::class);
 Route::get('/viewBignews', [ViewBigNewsController::class, 'index'])->name('viewBignews.index');
 Route::resource('kegiatan', KegiatanController::class);
+Route::resource('live', LiveController::class);
 Route::get('news/export/', [NewsContentController::class, 'export'])->name('news.export');
 Route::post('news/import/', [NewsContentController::class, 'import'])->name('news.import');
 Route::get('shorts/export/', [ShortController::class, 'export'])->name('shorts.export');
 Route::post('shorts/import/', [ShortController::class, 'import'])->name('shorts.import');
+
+// Youtube API routes
+Route::get('/youtube/livechat/{videoId}', [YouTubeController::class, 'getLiveChatId']);
+Route::get('/youtube/chat/messages', [YouTubeController::class, 'getChatMessages']);

@@ -128,7 +128,7 @@
                         <div class="image-section">
                             <div class="image-preview">
                                 <img id="preview-cover"
-                                    src="https://via.placeholder.com/150x150"
+                                    src="https://placehold.co/400x400?text=Image"
                                     width="150">
                             </div>
 
@@ -153,8 +153,17 @@
                     </div>
                 </div>
 
-                <div class="actions">
-                    <button id="saveBtn" class="btn primary" type="submit">Save Changes</button>
+                {{-- FOOTER --}}
+                <div class="form-footer" style="margin-top: 30px; display: flex; align-items: center;">
+                    <a href="{{ route('event.index') }}" class="btn-upload" style="text-decoration: none;">
+                        Kembali
+                    </a>
+
+                    <button type="submit"
+                        class="btn-save"
+                        style="margin-left:20px; border: none; cursor: pointer;">
+                        Save Changes
+                    </button>
                 </div>
             </form>
             @if ($errors->any())

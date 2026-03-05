@@ -69,6 +69,10 @@
       <span>Archives</span>
       <span class="navMeta"><span class="pill">Accordion + PDF links</span></span>
     </a>
+    <a href="{{ route('live.index') }}" class="navBtn <?= $page === 'live' ? 'active' : '' ?>">
+      <span>Live</span>
+      <span class="navMeta"><span class="pill">Youtube Livestream</span></span>
+    </a>
 
 </div>
 
