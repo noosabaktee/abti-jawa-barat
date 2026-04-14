@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\ArchivesController;
@@ -9,33 +8,54 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\HeroController;
 use App\Http\Controllers\KegiatanController;
-use App\Http\Controllers\NewsContentController; 
+use App\Http\Controllers\LiveController;
+use App\Http\Controllers\NewsContentController;
+use App\Http\Controllers\ProfileClubController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ViewBigNewsController;
+use App\Http\Controllers\ProfileHeroController;
 use App\Http\Controllers\ProgramKerjaController;
+use App\Http\Controllers\ShortController;
 use App\Http\Controllers\SponsorController;
-use App\Http\Controllers\EditBigNewsController;
-use Illuminate\Pagination\LengthAwarePaginator;
+use App\Http\Controllers\ViewBigNewsController;
+use App\Http\Controllers\YouTubeController;
+use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('welcome', [
+        'page' => 'home'
+    ]);
 });
 
-Route::get('/about', [AboutController::class, 'index'])->name('about.index');
-Route::resource('anggota', AnggotaController::class);
-Route::get('/archives', [ArchivesController::class, 'index'])->name('archives.index');
+Route::resource('about', AboutController::class);
+Route::resource('anggota', AnggotaController::class)
+    ->parameters([
+        'anggota' => 'anggota'
+    ]);
 Route::get('/big-news', [BigNewsController::class, 'index'])->name('big_news.index');
-Route::delete('/big-news/{id}', [BigNewsController::class, 'destroy'])->name('big_news.destroy');
 Route::resource('big_news', BigNewsController::class);
-Route::get('/event', [EventController::class, 'index'])->name('event.index');
-Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');
-Route::get('/hero', [HeroController::class, 'index'])->name('hero.index');
-Route::get('/news-content', [NewsContentController::class, 'index'])->name('news_content.index');
-Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
-Route::get('/program-kerja', [ProgramKerjaController::class, 'index'])->name('program_kerja.index');
-Route::get('/sponsor', [SponsorController::class, 'index'])->name('sponsor.index');
+Route::resource('hero', HeroController::class)->only(['index', 'store']);
+Route::resource('program-kerja', ProgramKerjaController::class);
+Route::resource('news-content', NewsContentController::class);
+Route::resource('event', EventController::class);
+Route::post('/event-header', [EventController::class, 'updateHeader'])->name('event.header.update');
+Route::resource('gallery', GalleryController::class);
+Route::post('/gallery-header', [GalleryController::class, 'updateHeader'])->name('gallery.header.update');
+Route::resource('profile', ProfileController::class);
+Route::resource('profile-club', ProfileClubController::class);
+Route::resource('profile-hero', ProfileHeroController::class);
+Route::resource('sponsor', SponsorController::class);
+Route::resource('archive', ArchivesController::class);
+Route::post('/archive-header', [ArchivesController::class, 'updateHeader'])->name('archive.header.update');
+Route::resource('short', ShortController::class);
 Route::get('/viewBignews', [ViewBigNewsController::class, 'index'])->name('viewBignews.index');
-Route::resource('kegiatan', KegiatanController::class); 
+Route::resource('kegiatan', KegiatanController::class);
+Route::resource('live', LiveController::class);
+Route::get('news/export/', [NewsContentController::class, 'export'])->name('news.export');
+Route::post('news/import/', [NewsContentController::class, 'import'])->name('news.import');
+Route::get('shorts/export/', [ShortController::class, 'export'])->name('shorts.export');
+Route::post('shorts/import/', [ShortController::class, 'import'])->name('shorts.import');
 
-
+// Youtube API routes
+Route::get('/youtube/livechat/{videoId}', [YouTubeController::class, 'getLiveChatId']);
+Route::get('/youtube/chat/messages', [YouTubeController::class, 'getChatMessages']);

@@ -39,12 +39,12 @@
       <span class="navMeta"><span class="pill">Logo + Detail</span></span>
     </a>
 
-    <a href="{{ route('program_kerja.index') }}" class="navBtn <?= $page === 'program-kerja' ? 'active' : '' ?>">
+    <a href="{{ route('program-kerja.index') }}" class="navBtn <?= $page === 'program-kerja' ? 'active' : '' ?>">
       <span>Program Kerja</span>
       <span class="navMeta"><span class="pill">Foto & Detail</span></span>
     </a>
 
-    <a href="{{ route('news_content.index') }}" class="navBtn <?= $page === 'news-content' ? 'active' : '' ?>">
+    <a href="{{ route('news-content.index') }}" class="navBtn <?= $page === 'news-content' ? 'active' : '' ?>">
       <span>News Content</span>
       <span class="navMeta"><span class="pill">News + Shorts</span></span>
     </a>
@@ -65,9 +65,13 @@
       <span class="navMeta"><span class="pill">10 items × 10 photos</span></span>
     </a>
 
-    <a href="{{ route('archives.index') }}" class="navBtn <?= $page === 'archives' ? 'active' : '' ?>">
+    <a href="{{ route('archive.index') }}" class="navBtn <?= $page === 'archives' ? 'active' : '' ?>">
       <span>Archives</span>
       <span class="navMeta"><span class="pill">Accordion + PDF links</span></span>
+    </a>
+    <a href="{{ route('live.index') }}" class="navBtn <?= $page === 'live' ? 'active' : '' ?>">
+      <span>Live</span>
+      <span class="navMeta"><span class="pill">Youtube Livestream</span></span>
     </a>
 
 </div>

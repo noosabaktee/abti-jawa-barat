@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class News extends Model
 {
+    protected $table = 'news';
+
     protected $fillable = [
         'title',
         'slug',
@@ -14,4 +16,9 @@ class News extends Model
         'cta_text',
         'youtube_url',
     ];
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 }

@@ -11,16 +11,17 @@ use App\Models\BigNews;
          * Run the migrations.
          */
         public function up(): void
-        {
-            Schema::create('big_news', function (Blueprint $table) {
-                $table->id();
-                $table->string('title');
-                $table->string('slug')->unique();
-                $table->string('image')->nullable();
-                $table->longText('content')->nullable();
-                $table->timestamps();
-            });
-        }
+{
+    Schema::create('big_news', function (Blueprint $table) {
+        $table->id();
+        $table->string('title');
+        $table->string('slug')->unique();
+        $table->string('image')->nullable();
+        $table->string('link')->nullable(); // Tambahkan ini
+        $table->longText('content')->nullable();
+        $table->timestamps();
+    });
+}
 
         /**
          * Reverse the migrations.

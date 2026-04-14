@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Anggota;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class AnggotaController extends Controller
 {
@@ -13,7 +13,7 @@ class AnggotaController extends Controller
     {
         $anggota = Anggota::latest()->paginate(10);
 
-        return view('anggota', [
+        return view('anggota.anggota', [
             'anggota' => $anggota,
             'page' => 'anggota'
         ]);
@@ -21,7 +21,7 @@ class AnggotaController extends Controller
 
     public function create()
     {
-        return view('add-anggota', [
+        return view('anggota.add-anggota', [
             'page' => 'anggota'
         ]);
     }
@@ -37,6 +37,18 @@ class AnggotaController extends Controller
             'logo'      => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
+        // Generate slug unik dari city
+        $baseSlug = Str::slug($validated['city']);
+        $slug = $baseSlug;
+        $i = 1;
+
+        while (Anggota::where('slug', $slug)->exists()) {
+            $slug = $baseSlug . '-' . $i++;
+        }
+
+        $validated['slug'] = $slug;
+
+        // Upload logo
         if ($request->hasFile('logo')) {
             $validated['logo'] = $request->file('logo')
                 ->store('anggota', 'public');
@@ -49,17 +61,20 @@ class AnggotaController extends Controller
             ->with('success', 'Anggota berhasil ditambahkan');
     }
 
-    public function show(Anggota $anggota)
-    {
-        return view('view-anggota', [
-            'anggota' => $anggota,
-            'page' => 'anggota'
-        ]);
-    }
+  public function show($slug)
+{
+    // 1. Cari data berdasarkan slug, jika tidak ada langsung 404
+    $anggota = Anggota::where('slug', $slug)->firstOrFail();
 
+    // 2. Kembalikan ke view dengan membawa data anggota dan variabel page
+    return view('anggota.view-anggota', [
+        'anggota' => $anggota,
+        'page'    => 'anggota'
+    ]);
+}
     public function edit(Anggota $anggota)
     {
-        return view('edit-anggota', [
+        return view('anggota.edit-anggota', [
             'anggota' => $anggota,
             'page' => 'anggota'
         ]);
@@ -76,6 +91,25 @@ class AnggotaController extends Controller
             'logo'      => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
+        // Update slug kalau city berubah
+        if ($validated['city'] !== $anggota->city) {
+
+            $baseSlug = Str::slug($validated['city']);
+            $slug = $baseSlug;
+            $i = 1;
+
+            while (
+                Anggota::where('slug', $slug)
+                    ->where('id', '!=', $anggota->id)
+                    ->exists()
+            ) {
+                $slug = $baseSlug . '-' . $i++;
+            }
+
+            $validated['slug'] = $slug;
+        }
+
+        // Upload logo baru
         if ($request->hasFile('logo')) {
 
             if ($anggota->logo && Storage::disk('public')->exists($anggota->logo)) {

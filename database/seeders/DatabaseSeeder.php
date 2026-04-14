@@ -31,6 +31,9 @@ class DatabaseSeeder extends Seeder
     $this->call([
         AnggotaSeeder::class,
     ]);
+    $this->call([
+        SponsorSeeder::class,
+    ]);                         
     }
 
 }

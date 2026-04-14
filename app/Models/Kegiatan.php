@@ -14,10 +14,11 @@ class Kegiatan extends Model
         'desc',
         'date',
         'image',
+        'link', // Tambahkan ini
     ];
-    public function getRouteKeyName()
-{
-    return 'slug';
-}
 
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 }
