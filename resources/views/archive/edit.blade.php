@@ -40,23 +40,23 @@
 
                     <h4 style="margin:0 0 10px;">Dokumen (10 slot)</h4>
 
-                    
+
                     @php
-                        $docItems = json_decode($archive->doc ?? '[]');
+                    $docItems = json_decode($archive->doc ?? '[]');
                     @endphp
                     <div class="cardGrid archiveDocGrid">
                         @for ($i = 1; $i <= 10; $i++)
                             @php
-                                $docPath = $docItems[$i - 1]->doc ?? null;
-                                $docUrl = $docPath ? asset('storage/' . $docPath) : '';
-                                $docFilename = $docPath ? basename($docPath) : '';
+                            $docPath=$docItems[$i - 1]->doc ?? null;
+                            $docUrl = $docPath ? asset('storage/' . $docPath) : '';
+                            $docFilename = $docPath ? basename($docPath) : '';
                             @endphp
                             <div class="itemCard">
                                 <div class="itemTop">
                                     <b>Doc #{{ $i }}</b>
                                     <span class="pill">docs.{{ $i }}</span>
                                 </div>
-    
+
                                 <div class="field">
                                     <label>Nama Dokumen</label>
                                     <input type="text"
@@ -64,7 +64,7 @@
                                         value="{{ old("doc_name_{$i}", json_decode($archive->doc)[$i-1]->name ?? '') }}"
                                         placeholder="Nama dokumen...">
                                 </div>
-    
+
                                 <div class="field">
                                     <div class="labelRow">
                                         <label>Upload PDF</label>
@@ -89,7 +89,7 @@
                                             <span>Klik untuk upload PDF</span>
                                         </div>
 
-                                        
+
 
                                         <div class="archiveUploadState archiveUploadPreview" data-archive-upload-preview hidden>
                                             <a href="{{ $docUrl }}" target="_blank" rel="noopener noreferrer" class="archivePdfLink" data-archive-upload-link>
@@ -99,13 +99,22 @@
                                         </div>
                                     </label>
                                 </div>
-    
+
                             </div>
-                        @endfor
-                        
+                            @endfor
+
                     </div>
-                    <div class="actions">
-                        <button type="submit" class="btn primary">Save Changes</button>
+                    {{-- FOOTER --}}
+                    <div class="form-footer" style="margin-top: 30px; display: flex; align-items: center;">
+                        <a href="{{ route('archive.index') }}" class="btn-upload" style="text-decoration: none;">
+                            Kembali
+                        </a>
+
+                        <button type="submit"
+                            class="btn-save"
+                            style="margin-left:20px; border: none; cursor: pointer;">
+                            Save Changes
+                        </button>
                     </div>
             </form>
             @if ($errors->any())

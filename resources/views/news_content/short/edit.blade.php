@@ -40,8 +40,17 @@
                             placeholder="https://www.youtube.com/shorts/...">
                     </div>
                 </div>
-                <div class="actions">
-                    <button type="submit" id="saveBtn" class="btn primary">Save Changes</button>
+                {{-- FOOTER --}}
+                <div class="form-footer" style="margin-top: 30px; display: flex; align-items: center;">
+                    <a href="{{ route('news-content.index') }}" class="btn-upload" style="text-decoration: none;">
+                        Kembali
+                    </a>
+
+                    <button type="submit"
+                        class="btn-save"
+                        style="margin-left:20px; border: none; cursor: pointer;">
+                        Save Changes
+                    </button>
                 </div>
 
             </form>
